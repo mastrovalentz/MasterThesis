@@ -1,0 +1,110 @@
+\begin{figure}[!h]
+\begin{minipage}{0.45\textwidth}
+
+    \centering
+\missingfigure{step}
+\caption{step}
+    \label{fig:act_step}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \textbf{Binary step}
+      \begin{align}
+        a(x) &=
+        \begin{cases}
+        1   & \text{if } x \geq 0 \\
+        -1  & \text{if } x < 0 
+  \end{cases}
+\end{align}
+\end{minipage}
+    \end{figure}
+    
+\begin{figure}[!h]
+\begin{minipage}{0.45\textwidth}
+
+    \centering
+\missingfigure{sigmoid function}
+\caption{sigmoid}
+    \label{fig:act_sig}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \textbf{Sigmoid} or \textbf{Soft step}
+   \begin{equation}
+       a(x) =\frac{1}{1+e^{-x}}
+   \end{equation}
+\end{minipage}
+    \end{figure}
+
+
+\begin{figure}[!h]
+\begin{minipage}{0.45\textwidth}
+    \centering
+\missingfigure{tanh function}
+\caption{tanh}
+    \label{fig:act_tanh}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \textbf{Hyperbolic tangent}
+   \begin{equation}
+       a(x) =\frac{e^x-e^{-x}}{e^x+e^{-x}}
+   \end{equation}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{minipage}{0.45\textwidth}
+    \centering
+\missingfigure{relu}
+\caption{relu}
+    \label{fig:act_relu}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \textbf{Rectified Linear Unit (ReLU}
+   \begin{align}
+        a(x) &=
+        \begin{cases}
+        x   & \text{if } x > 0 \\
+        0  & \text{if } x \leq 0 
+  \end{cases}
+\end{align}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{minipage}{0.45\textwidth}
+    \centering
+\missingfigure{elu}
+\caption{elu}
+    \label{fig:elu}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \textbf{Exponential Linear Unit (ELU)}
+   \begin{align}
+        a(x) &= 
+        \begin{cases}
+        \alpha \left(e^x -1\right)  & \text{if } x \leq 0 \\
+        x  & \text{if } x > 0 
+  \end{cases}
+\end{align}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{minipage}{0.45\textwidth}
+    \centering
+\missingfigure{gelu}
+\caption{gelu}
+    \label{fig:gelu}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \textbf{Gaussian Error Linear Unit (GELU)}
+   \begin{equation}
+       a(x) = \frac{1}{2} x \left( 1+\text{erf} \left( \frac{x}{\sqrt{2}}\right)\right)
+   \end{equation}
+\end{minipage}
+\end{figure}

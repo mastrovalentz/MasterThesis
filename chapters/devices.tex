@@ -1,0 +1,137 @@
+\chapter{Device Identification}
+
+The identification of a device inside a network, namely the ability of infer the type
+and, when possible, its brand and model, is a task of increasing importance. With the ever-going expansion of the Internet of Things (IoT) the number and diversity of devices interconnected is rapidly increasing and thus the ability of identifying them is becoming more and more important.
+
+To tackle the identification task we propose a machine learning based approach in which, thanks to the implementation of an Artificial Neural Network, the identification is performed without identifiers and can be easily automated to large scale networks. 
+
+In this chapter we will first introduce the classification task, under which the identification falls in the machine learning framework, in \secref{classification}. In \secref{identification} we will then discuss the importance of the identification and then present the datasets used for this study.
+
+\section{The classification task}\label{classification}
+
+In the machine learning framework we indicate with classification the task of associating a particular label to a given object. 
+
+Indicating with $x_i$ the i-th entry of the input dataset $\mathcal{D}$, our goal is associating it to a label $y_i\in\mathcal{Y}$, were $\mathcal{Y}$ is the set of all possible labels. In our case this association is performed using an ANN that, as described previously, can be represented by a set $\mathcal{F}_{N_L} = \left\{ f_N(\bar{x}), \boldsymbol{w}, \bar{b}\right\}$, in this way we are substantially using the $\mathcal{F}_{N_L}$ set a a map:
+\begin{equation}
+    \begin{aligned}
+        \mathcal{F}_{N_L}: & \mathcal{D} &\to & \mathcal{Y} \\
+        & x_i &\to & y_i \\
+    \end{aligned}
+\end{equation}
+
+Depending on the label set $\mathcal{Y}$ we can divide the classification tasks in different subgroups, the main ones being:
+\begin{itemize}
+    \item \textbf{Binary classification}: this group is composed of tasks with only to possible outcomes, from which the "binary" adjective comes, example of this tasks are:
+    \begin{itemize}
+        \item Spam detection: identify a message as spam or not
+    \item Signal over background discrimination: in field such as particle physics a common task is discriminating between signal and background events
+    \end{itemize}
+    \item \textbf{Multi-class classification}: is this group the label set has more than two possible labels but still a finite number of them, an example of tasks belonging to this group is:
+    \begin{itemize}
+        \item Writing recognition: recognize and classify written digits and/or letters
+    \end{itemize}
+    \item \textbf{Multi-label classification}: tasks belonging to this group are characterized by the presence of multiple label
+    datasets. In this case the labels are represented by an array of values $\bar{y}_i$ instead of being singular values. An example of this type of classification is:
+    \begin{itemize}
+        \item Photo classification: recognize multiple elements in a photo, e.g. given the photo of an house recognize windows, doors, etc...
+    \end{itemize}
+\end{itemize}
+
+Our case study, as we will see in \secref{chap4}, belongs to the multi-class classification group since our goal is to identify the device type among many possible classes. 
+
+
+\section{Network devices and identification}\label{identification}
+
+One of the reasons of the device identification importance lies in the cybersecurity field: the ability of identifying a device is crucial in order to manage the assets of a networks and identifying potential external or malicious connected devices.
+
+In the past, when working on small scale networks of few connected devices, it was possible to manually keep a database of the devices classified using a "standard" identifier, such as their IP or MAC address. This is however impossible nowadays, not only due to the scale of the network, which can be of thousands of devices, but also due to the the fact that devices may have multiple interfaces, such as Wi-Fi and LTE for a smartphone, resulting in a dynamic change of the aforementioned identifiers.
+
+In order to take this problem we propose a method based on the use of Artificial Neural Network. The whole approach will be described in detail in the following chapters but the main idea is to utilize the traffic stream information to perform the identification. More precisely we are going to create an input dataset were each device is represented by a set of time series of its traffic inside the network. As stated before there exists an a wide variety of devices therefore creating networks of different topology. For this reason we decided to utilize two completely different, publicly available, datasets:
+\begin{itemize}
+    \item \textbf{4SICS dataset}: this dataset contains traffic stream collected at an industrial cyber security conference. This dataset represent an industrial network with many PLCs and other industrial equipments, such as firewalls and switches.
+    \item \textbf{IoT Sentinel Dataset}: this dataset was used in the "IoT SENTINEL" publication in the IEE ICDCS publication for experiments in IoT device identification. This dataset contains information of many smart home devices, effectively representing what may be a domestic network.
+\end{itemize}
+
+\subsection{4SICS dataset}
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{l|l|l}
+    \toprule
+        IP address & Device name & Device type  \\
+    \midrule
+        192.168.88.15 & DirectLogic 205  & PLC \\
+        192.168.88.20 & Phoenix Contact FL IL 24 BK-PAC & Ethernet bus coupler \\
+        192.168.88.25 & Advantech ADAM-5500 & Ethernet I/O module \\
+        192.168.88.49 & AXIS 206 & Network Camera\\
+        192.168.88.75 & Hirchmann EAGLE 20 Tofino  & Firewall \\
+192.168.88.30 & Siemens SIMATIC S7-1200 & PLC \\
+192.168.88.91/95  & RUGGEDCOM RS910 & Serial device server  and ethernet switch \\
+192.168.89.1  & RUGGEDCOM RX1100  & Router \\
+192.168.88.50 & Red Lion DSP  & Protocol converter \\
+192.168.88.60 & Moxa EDS-508A & Switch \\
+192.168.88.61 & Moxa EDS-508A & Switch \\
+192.168.88.70 & Cisco Catalyst 2955 & Switch \\
+192.168.88.80 & Moxa UC-7112 & Embedded computer \\
+192.168.88.100 & HOST Engineering MB-gateway & Modbus gateway \\
+192.168.88.51 & Beckhoff CX1010 & Embedded computer \\
+192.168.88.85 & xLogic x-Messenger  & WiFi PLC \\
+192.168.88.105 & & TCP/IP to RS-232/422/484 Converter \\
+192.168.88.1 & Westermo Lynx 3643-0105 & Router \\
+192.168.87.1 & Westermo Lynx 3643-0105 & Router \\
+10.10.10.10  & Siemens SIMATIC S7 & PLC \\
+10.10.10.30  & & Windows PC \\
+    \bottomrule        
+    \end{tabular}
+    \caption{4sics dataset}
+    \label{tab:4sicsdataset}
+\end{table}
+
+\subsection{IoT device dataset}
+
+
+
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{l|l|l}
+    \toprule
+     Device name & Device model & Device type  \\
+    \midrule
+  Aria              & Fitbit Aria WiFi-enabled scale  &  Weight scale \\
+  D-LinkCam         & D-Link HD IP Camera DCH-935L    &  Camera \\
+  D-LinkDayCam      & D-Link WiFi Day Camera DCS-930L &  Camera \\
+  D-LinkDoorSensor  & D-Link Door \& Window sensor     &  Sensor\\
+  D-LinkHomeHub     &  D-Link Connected Home Hub DCH-G020 &  Hub  \\
+  D-LinkSensor      & D-Link WiFi Motion sensor DCH-S150 &  Sensor \\
+  D-LinkSiren       & D-Link Siren DCH-S220&  Siren \\
+  D-LinkSwitch      & D-Link Smart plug DSP-W215  &  Smart plug \\
+  D-LinkWaterSensor & D-Link Water sensor DCH-S160 &  Sensor \\
+  EdimaxCam         & Edimax IC-3115W Smart HD WiFi Network Camera &  Camera \\
+  EdimaxPlug1101W   & Edimax SP-1101W Smart Plug Switch  &  Smart plug \\
+  EdimaxPlug2101W   & Edimax SP-2101W Smart Plug Switch&  Smart plug \\
+  EdnetCam          & Ednet Wireless indoor IP camera Cube  &  Camera\\
+  EdnetGateway      & Ednet.living Starter kit power Gateway & Gateway \\
+  HomeMaticPlug     & Homematic pluggable switch HMIP-PS & Smart plug \\
+  HueBridge         & Philips Hue Bridge model 3241312018 &  Bridge\\
+  HueSwitch         & Philips Hue Light Switch PTM 215Z &  Light switch \\
+  iKettle2          &  Smarter iKettle 2.0 water kettle SMK20-EU & Smart boiler \\
+  Lightify          & Osram Lightify Gateway & Gateway \\
+  MAXGateway        & Cube LAN Gateway for MAX & Gateway \\
+  SmarterCoffee     & Smarter SmarterCoffee coffee machine SMC10-EU &  Coffee machine\\
+  TP-LinkPlugHS100  & TP-Link WiFi Smart plug HS110 & Smart plug \\
+  TP-LinkPlugHS110  & TP-Link WiFi Smart plug HS100 & Smart plug \\
+  WeMoInsightSwitch & WeMo Insight Switch model F7C029de & Smart Plug \\
+  WeMoLink          & WeMo Link Lighting Bridge model F7C031vf & Bridge  \\
+  WeMoSwitch        & WeMo Switch model F7C027de & Light switch \\
+  Withings          &  Withings Wireless Scale WS-30 &  Weight scale\\
+        
+        
+        
+    \bottomrule        
+    \end{tabular}
+    \caption{iot sentinel dataset}
+    \label{tab:iotdataset}
+\end{table}
+
+
