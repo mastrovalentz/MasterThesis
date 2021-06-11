@@ -221,10 +221,76 @@ Applications   & browser ,  http ,  https ,  telnet ,    dropbox-lsp ,  smtp ,  
 \label{tab:protolist}
 \end{table}
 
+\section{Dataset division and device classes}
+
+In the previous sections we described how to extrapolate useful information from a traffic file and how to process it in order to represent a specific device. Looking at the dataset device table, \tabref{tab:4sicsdataset} and \tabref{tab:iotdataset}, we can see that there are many similar devices, such as switches or sensors. 
+
+To further enhance the capability of identifying a device we can therefore group similar devices in classes allowing the classifier to be trained on a more varied and bigger dataset, resulting in a more robust classifier. This choice has also the great advantage of enhancing the capability of identifying devices that are not part of the training dataset, this also allows to eventually identify also devices that will be developed in the future without needing to retrain the classifier.
+
+We now have all the ingredients needed to create our training dataset. On last thing that is important to mention is that the training dataset, as in most the Machine Learning applications,
+does not correspond to the full dataset. The full dataset, composed of the $\bar{z}_j^j$ time series and the protocol communication binary vectors, is in fact split in three subsets:
+\begin{itemize}
+    \item \textbf{Training set}: this set is used in the training procedure to train the classifier, the best parameters of the model are estimated to minimize the loss over this set
+    \item \textbf{Validation set}: this set is used during the training to monitor the evolution of the prediction accuracy and of the loss function in order to identify the eventual presence of an overfitting behaviour 
+    \item \textbf{Test set}: this set is used after the training procedure to evaluate the real performance of the classifier
+\end{itemize}
+
+For each device the subsets are randomly created using the 60\% of the total number of samples for the training set and the 20\% for both the validation and test set.
+
+In \tabref{4sicsdev} and \tabref{iotdev} the chosen device classes alongside with the device used for the creation of the dataset are reported. In the table the number of elements for each device of a specific class is also reported.
 
 
 
-\section{Dataset statistic and device classes}
-\lipsum[1]
+
+\begin{table}
+\centering
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Device Class} & \textbf{Devices} & \multicolumn{4}{c}{\textbf{Number of samples}} \\
+& & Training & Validation & Test & Total \\
+\midrule
+\multirow{1}{*}{PLC}      & dev1& 10000 & 10000 & 10000 & 10000  \\
+                         & dev2 & 10000 & 10000 & 10000 & 10000  \\
+\midrule
+\multirow{1}{*}{Camera}  & & 10000 & 10000 & 10000 & 10000 \\
+\midrule
+\multirow{1}{*}{Switch} & & 10000 & 10000 & 10000 & 10000 \\
+\midrule
+\multirow{1}{*}{Firewall}& & 10000 & 10000 & 10000 & 10000 \\
+\midrule
+\multirow{1}{*}{Router} &  &10000 & 10000 & 10000 & 10000  \\
+\midrule
+\midrule
+Total & & 10000 & 10000 & 10000 & 10000 \\
+\bottomrule
+\end{tabular}
+\caption{tabella 4sics classi}
+\label{tab:4sicsdev}
+\end{table}
 
 
+\begin{table}
+\centering
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Device Class} & \textbf{Devices} & \multicolumn{4}{c}{\textbf{Number of samples}} \\
+& & Training & Validation & Test & Total \\
+\midrule
+\multirow{1}{*}{PLC}      & dev1& 10000 & 10000 & 10000 & 10000  \\
+                         & dev2 & 10000 & 10000 & 10000 & 10000  \\
+\midrule
+\multirow{1}{*}{Camera}  & & 10000 & 10000 & 10000 & 10000 \\
+\midrule
+\multirow{1}{*}{Switch} & & 10000 & 10000 & 10000 & 10000 \\
+\midrule
+\multirow{1}{*}{Firewall}& & 10000 & 10000 & 10000 & 10000 \\
+\midrule
+\multirow{1}{*}{Router} &  &10000 & 10000 & 10000 & 10000  \\
+\midrule
+\midrule
+Total & & 10000 & 10000 & 10000 & 10000 \\
+\bottomrule
+\end{tabular}
+\caption{tabella 4sics classi}
+\label{tab:iotdev}
+\end{table}
