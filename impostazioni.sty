@@ -1,6 +1,6 @@
 \usepackage[top=2.5cm,bottom=2.5cm,inner=2.5cm,outer=3cm]{geometry}
 \usepackage[pdftex]{graphicx} %per poter inserire le figure
-\usepackage{amssymb,amsmath,amsthm,amsfonts}
+\usepackage{amssymb,amsmath,amsthm,amsfonts, extarrows}
 \usepackage{xspace}
 \usepackage{tabularx}
 \usepackage{indentfirst}
@@ -39,6 +39,7 @@
 
 \usetikzlibrary{matrix,positioning,fit,backgrounds,intersections}
 \usetikzlibrary{calc}
+\usetikzlibrary{arrows}
 
 %\renewcommand\thesection{\arabic{section}}
 \addbibresource{bibliografia.bib}
@@ -52,6 +53,7 @@
 \newcommand{\secref}[1]{\textbf{Section \ref{#1}}}
 \newcommand{\pagref}[1]{\textbf{Page \pageref{#1}}}
 \newcommand{\algoref}[1]{\textbf{Algorithm \ref{#1}}}
+\newcommand{\chapref}[1]{\textbf{Chapter \ref{#1}}}
 
 
 \fancypagestyle{fancy-style}{%

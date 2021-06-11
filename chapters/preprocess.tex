@@ -1,10 +1,160 @@
 \chapter{Dataset preprocessing and features extraction}\label{chap4}
 
+In the previous chapter we introduced the concepts of Artificial Neural Networks in the Machine learning framework for the classification task. In this chapter we will discuss how, starting from the "raw" dataset we extract, clean and preprocess the main features which will compose the final dataset for the training of or classifier model.
+
+The datasets introduced in \chapref{chap3} can not be in fact directly used for the training due to the format used to \textbf{\large{DA FINIRE}}
+
 \section{Traffic stream time series creation}
-\lipsum[1]
+
+Since all the traffic informattion is contained in \texttt{pcap} files it is necessary to extract and convert this information to a numeric format in order to utilize it as input of the model.
+To this we use the WireShark suite which allows to inspect \textit{pcap} files and offers various tools to process them. In particular the \texttt{tshark} command line tools allows to extract a time series of the traffic stream.
+
+Using this tool the traffic time series are extracted in the following way: for each device listed in \tabref{tab:4sicsdataset} and \tabref{tab:iotdataset} we use its IP or MAC address to respectively filter the traffic data. After this for each device we export to a simple text file the total time series. To avoid notation issues in the following we will refer to the total time series of a device as ${\tilde{X}_i^j}$, where $i$ is a time index representing the value of the timeseries at a specif time and $j$ is an index representing the particular feature considered. 
+
+Each device is then represented by a multivariate timeseries. The features considered for this work alongisde with the j-index associated are reported in the following:
+\begin{itemize}
+    \item ${\tilde{X}_i^1}$: Number of packages transferred \textbf{from} the specific device to the whole network
+    \item ${\tilde{X}_i^2}$: Number of packages transferred \textbf{to} the specific device from the whole network
+    \item ${\tilde{X}_i^3}$: Bytes transferred \textbf{from} the specific device to the whole network
+    \item ${\tilde{X}_i^4}$: Bytes transferred \textbf{to} the specific device from the whole network
+\end{itemize}
+
+The choice of requesting a separate time series of the traffic from/to a specific device is particularly important since it allows the classifier to distinguish the behaviour of devices with mostly output traffic (e.g. sensors) from devices with mostly input traffic (e.g. control devices).
+
+In \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} an example of the time series extracted from a device of the 4SICS and IoT dataset are respectively shown. It is important to notice that the IoT device time series is very short if compared to the 4SICS one; this fact is not purely coincidential, in fact all the time series from the IoT dataset present a small number of elemnts due to the small amount of captured traffic in the relative \texttt{pcap} file.
+
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[c]{0.49\linewidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Package from /to]{
+        \missingfigure{}
+    \label{fig:ts_example_pkg_4sics}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\linewidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Bytes from /to]{
+\missingfigure{}
+\label{fig:ts_example_bytes_4sics}
+        }
+    \end{minipage}%
+    \caption{confronto}
+    \label{fig:ts_example_4sics}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[c]{0.49\linewidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Package from /to]{
+        \missingfigure{}
+    \label{fig:ts_example_pkg_4iot}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\linewidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Bytes from /to]{
+\missingfigure{}
+\label{fig:ts_example_bytes_iot}
+        }
+    \end{minipage}%
+    \caption{confronto}
+    \label{fig:ts_example_iot}
+\end{figure}
+
+
 
 \section{Time series preprocessing}
-\lipsum[1]
+
+Despite being now saved in a simple format the extracted time series are still not utilizable as input of a classifier. There are many reasons for this, the main ones being the irregularity of the time series length and not being normalized. To solve this issue we have to preprocess the time series before utilizing them for the classification. 
+
+The prepocessing is composed of the following steps:
+\begin{itemize}
+    \item {Length standardization} and data augmentation
+    \item Time series selection and feature combination
+    \item Feature normalization
+\end{itemize}
+
+\subsection{Length standardization and data augmentation}
+
+One the most important requirement for the use of a dataset as input of Neural Netowrk classifier is for its elements to be of constant dimensions. As we said previously the lenght of an extracted time series is not regular since it depends on the amount fo traffic captured for that specific device.
+
+Given a time series ${\tilde{X}_i^j}$ of length $N$ we split it in a group of time series of length $L$, where the variable $L$ is usually also called lookback. More specifically we now representt each device with a group of time series $\bar{x}_i^j$ with regular length and the same number of feature as the original:
+\begin{equation}
+    \bar{x}_i^j = \left\{\tilde{X}_{n\cdot i}^j, \tilde{X}_{n\cdot i +1 }^j, \dots, \tilde{X}_{n\cdot(i+1)}^j  \right\}
+    \qquad\text{with }n=\frac{N}{L}
+\end{equation}
+
+This approach produces a set of $\frac{N}{L}$ time series for each device that can now be utilized as the desired input of a classifier but is still affected by an issue. As we said before looking at the time series shown in \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} we can notice that the number of elements in the IoT dataset time series is very low with most of them having less than 100 elements. 
+
+In order to achieve good performances the training set of a classifier requires a big number of training samples, usually at least the same as the number of parameters. As we will shown in the following chapters however a value of the lookback lower $L=25$ produces time series too short for an effective training of the model. 
+
+The combination of this approach with the necessity of using a value of $L$ at least equal to 25 results in the impossibility of creating enough samples for IoT dataset. The only way to solve this issue is to perform a data augmentation during the division of the ${\tilde{X}_i^j}$ time series, namely we want to implement some technique that allows us to increase the number of time series extract from ${\tilde{X}_i^j}$. Many possible techniques can be implemented, such as generating time series with a Monte Carlo algorithm from the $\bar{x}_i^j$ samples, but a simpler, yet very effective, technique was implemented.
+
+The standard splitting methods divides the original time series is $\frac{N}{L}$ time series where each one has completely different temporal values than the others. It is instead possible to split the original time series in such a way that each series shares $L-1$ temporal values with the previous and successive one, differing by just one value. Using this approach $\bar{x}_i^j$
+is now defined as:
+\begin{equation}
+    \bar{x}_i^j = \left\{\tilde{X}_{i}^j, \tilde{X}_{i +1 }^j, \dots, \tilde{X}_{i+L-1)}^j  \right\}
+\end{equation}
+
+This approach leads to the creation of $N-L$ time series solving the issue of having too few samples for the IoT dataset. In fact calling with $n_S$ and $n_A$ the number of time series respectively generated with the "standard" and "data augmentation" approach if we compute the ratio between the two we obtain:
+\begin{equation}
+    \frac{n_A}{n_S} = \frac{N-L}{\frac{N}{L}} = \frac{N-L}{N}\cdot L \quad \xrightarrow{N>>L}
+    \quad \frac{n_A}{n_S}= L 
+\end{equation}
+
+Considering that, as said before L must be at least bigger than 25, we can see that for big enough N we get a consistent increase of the number of time series obtained for each device. In \figref{fig:ts_aug} a visual comparison of the two approaches is shown.
+
+\begin{figure}
+    \centering
+\missingfigure{}
+\caption{ts aug}
+    \label{fig:ts_aug}
+\end{figure}
+
+\subsection{Time series selection and feature combination}
+
+The dataset obtained using the methods described in the previous section can be utilized as the input of the classifier however some operations should be done in order to improve the efficiency of the training and the overall performance of the classifier.
+
+The first possible operation over the $\bar{x}_i^j$ comes from a simple consideration: in most cases a device inside a network will not be in constant communication with the other devices but, most likely, will present time intervals with where no traffic from/to itself is produced. This consideration is also validated from the time series shown in \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} where there are many visible intervals without any traffic from/to the considered devices.
+
+A time interval where a device does not communicate will translate in a time series with all null values. Such type of time series not only does not bring any information regarding the device, but can also be an hindrance during the training procedure. The first operation is therefore the complete removal of all the null time series from the $\bar{x}_i^j$ datasets.
+
+After the removal of the null time series we can focus directly on the features. As we said before we decided to separately extrapolate the time series of the traffic from and to a specific device in order to enhance the quantity of information passed to the classifier. The use of both the time series of the number transferred of packets and of transferred bytes is however redundant since, for most devices, they may be just directly proportional and, in case they are not, the relation between the two may difficult to understand for the classifier. In order to enhance the quality of the information provided to the classifier we can then define a new group of time series $\bar{x}^{\prime j}_i$:
+\begin{equation}
+    \bar{x}^{\prime j}_i = 
+    \begin{cases}
+    \begin{aligned}
+    & \bar{x}_i^j               &&\text{if}&& j&=&1,2 \\
+    & \bar{x}_i^3 + \bar{x}_i^4 &&\text{if}&& j&=&3 \\
+    & \bar{x}_i^3 - \bar{x}_i^4 &&\text{if}&& j&=&4 \\
+    \end{aligned}
+    \end{cases}
+\end{equation}
+
+With this transformation we leave untouched the information regarding the number of transferred packages but we substitute the transferred bytes from and to a device with the total transferred bytes and the difference between transferred and received ones, removing the redundancy in the information.
+
+\subsection{Feature normalization}
+
+
+
+
+\begin{figure}
+    \centering
+\includestandalone[width=\textwidth]{images/networks/ts_processing_v1}
+%\includestandalone[width=\textwidth]{images/networks/ts_processing_v2}
+\caption{ts\_processing}
+    \label{fig:ts_processing}
+\end{figure}
 
 \section{Communication protocol analysis}
 \lipsum[1]
@@ -12,5 +162,4 @@
 \section{Dataset statistic and device classes}
 \lipsum[1]
 
-\section{Analysis tools}
-\lipsum[1]
+
