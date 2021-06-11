@@ -106,17 +106,26 @@ is now defined as:
     \bar{x}_i^j = \left\{\tilde{X}_{i}^j, \tilde{X}_{i +1 }^j, \dots, \tilde{X}_{i+L-1)}^j  \right\}
 \end{equation}
 
-This approach leads to the creation of $N-L$ time series solving the issue of having too few samples for the IoT dataset. In fact calling with $n_S$ and $n_A$ the number of time series respectively generated with the "standard" and "data augmentation" approach if we compute the ratio between the two we obtain:
+This approach leads to the creation of $N-L+1$ time series solving the issue of having too few samples for the IoT dataset. In fact calling with $n_S$ and $n_A$ the number of time series respectively generated with the "standard" and "data augmentation" approach if we compute the ratio between the two we obtain:
 \begin{equation}
-    \frac{n_A}{n_S} = \frac{N-L}{\frac{N}{L}} = \frac{N-L}{N}\cdot L \quad \xrightarrow{N>>L}
+    \frac{n_A}{n_S} = \frac{N-L+1}{\frac{N}{L}} = \frac{N-L+1}{N}\cdot L \quad \xrightarrow{N>>L}
     \quad \frac{n_A}{n_S}= L 
 \end{equation}
 
-Considering that, as said before L must be at least bigger than 25, we can see that for big enough N we get a consistent increase of the number of time series obtained for each device. In \figref{fig:ts_aug} a visual comparison of the two approaches is shown.
+Considering that, as said before L must be at least bigger than 25, we can see that for big enough N we get a consistent increase of the number of time series obtained for each device. In
+\figref{fig:ts_std} and \figref{fig:ts_aug} a visual comparison of the two approaches is shown.
 
 \begin{figure}
     \centering
-\missingfigure{}
+\includestandalone[width=0.8\textwidth]{images/preprocessing/standard_splitting}
+\caption{ts std}
+    \label{fig:ts_std}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+\includestandalone[width=0.9\textwidth]{images/preprocessing/augmented_splitting}
 \caption{ts aug}
     \label{fig:ts_aug}
 \end{figure}
@@ -145,8 +154,22 @@ With this transformation we leave untouched the information regarding the number
 
 \subsection{Feature normalization}
 
+The last step of the time series preprocessing in the feature normalization. In this step we rescale the time series in order for them to have null mean and unitary variance. This step is particularly important in order to standardize the time series themselves. The main reason for the importance of this step derives from its ability of removing an eventual bias that may be introduced by external factors such as the bandwidth or the connection speed of the particular network we are considering.
+
+From a mathematical point of view, the normalization translates in the definition of a new group of time series $\bar{z}^{j}_i$, computed starting from the previously defined $\bar{x}^{\prime j}_i$. Indicating with $\bar{x}^{\prime j}_{i,k}$ the k-th value of the $\bar{x}^{\prime j}_i$ time series it is possible to compute the mean value $\mu_i^j$ and standard deviation $\sigma_i^j$ of each time series:
+\begin{equation}
+\mu_i^j = \frac{1}{L}\sum_{k=0}^{L-1} \bar{x}^{\prime j}_i\qquad
+    \sigma_i^j = \sqrt{\frac{1}{L}\sum_{k=0}^{L-1}
+                \left(\bar{x}^{\prime j}_i-\mu_i^j\right)}
+\end{equation}
 
 
+The normalized time series $\bar{z}^{j}_i$ is then defined as :
+\begin{equation}
+    \bar{z}^{j}_i = \frac{\bar{x}^{\prime j}_i - \mu_i^j}{\sigma_i^j}
+\end{equation}
+
+After the application of the normalization procedure over the selected and modified time series we now have a standardized representation of each device which can be used to train a Neural Network classifier. A visual summary of the preprocessing procedure in shown in \figref{fig:ts_processing}.
 
 \begin{figure}
     \centering
@@ -157,7 +180,49 @@ With this transformation we leave untouched the information regarding the number
 \end{figure}
 
 \section{Communication protocol analysis}
-\lipsum[1]
+
+The analysis of traffic time series is by itself enough to train a classifier able to perform the identification task up to a certain level of precision. The use of only the time series itself is however reductive in the representation of a device and does not exploit all the information that we can extrapolate from a traffic file.
+
+As previously described we are interested in performing an identification of the devices without using the "standard" identifiers provided by the devices themselves. An important information that we are not yet exploiting during the analysis of the time series is the protocol used by a device to communicate with the others.
+The use of the information regarding the communication protocols used by a device may improve significantly the capability of a classifier to identify a device and should therefore be included in the representation of the device.
+
+The first step is to associate each device all the protocol used to communicate, this operation is done using the Guardian Community Edition(GCE) and analysing the \texttt{pcap} files with it. The simple association of a device with all the protocol used to communicate is however not directly usable as information for a classifier since it requires the information to be in a numeric format.
+
+The simplest approach would then be to enumerate the list of all protocols used in a traffic file and then associate each device with a vector containing the indices of the used protocols. However, similarly to the use of a full length time series, this approach is not optimal due to the non regular length of the generated vector, since the number of used protocols changes for each device. Considering also the big variety of protocols and the fact that in the future many other protocols will be developed and implemented the use of this approach will not lead to a good representation of the device.
+
+A better approach is to divide the communication protocols in classes based on the high level behaviour of a communication done via that protocol, namely we want to group protocols used for the same type of operations together. Once the classes are defined we can associate each device to a vector of binary values with the same length of the number of classes, where each binary value is 1 if the device uses a protocol of a specific class and 0 otherwise. This approach offer many advantages, the first one being an already optimal input for the training of a classifier, since the vectors have regular length and standardized values but, most importantly, allows the generalization to new protocols by just adding them to the specific class.
+
+To better illustrate this approach let's make an example. Let's for simplicity define only three classes of protocols:
+\begin{itemize}
+    \item \textbf{OT protocols}: \texttt{dnp3}, \texttt{modbus}
+    \item \textbf{Monitoring}: \texttt{snmp}, \texttt{igmp}, \texttt{s7}
+    \item \textbf{Applications}: \texttt{imap}, \texttt{pop3}, \texttt{https}
+\end{itemize}
+
+if we then have a device communicating with the \texttt{"dnp imap pop3"} protocols, we will represent it with  $[1,0,1]$ since it uses OT and application protocols but not monitoring ones.
+In \tabref{tab:protolist} a list of the classes of communication protocols considered in this work is reported.
+
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Class} & \textbf{Communication protocols} \\
+\hline
+OT protocols   &  dnp3 ,  modbus ,  ethernetip ,   pi-connect \\
+Authentication & kerberos ,  netbios-ns ,  dce-rpc ,  kms \\
+Base           & dns ,  mdns ,  ssdp \\
+Monitoring     & snmp ,  igmp ,  s7 ,  ldaps ,  vnc ,  ssh \\
+Data Transfer  & ftp ,  tcp ,  ip ,  netbios-ssn ,  udp ,  ftps ,  cotp ,   ftps-data \\
+Applications   & browser ,  http ,  https ,  telnet ,    dropbox-lsp ,  smtp ,  imap ,  imaps ,  pop3  \\
+\hline
+\end{tabular}
+\caption{tabella protocollli}
+\label{tab:protolist}
+\end{table}
+
+
+
 
 \section{Dataset statistic and device classes}
 \lipsum[1]
