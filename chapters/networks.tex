@@ -445,7 +445,7 @@ where $\eta$ is the generic learning rate and the suggested value for the $\epsi
 
 When the an ANN architecture reaches an high number of parameters and a really deep or complex architectures it is necessary to implement some other optimization techniques in order for them to be able to solve the designated task. In this section we will focus on the two mostly implemented techniques, which are used in most of the common application.
 
-\subsection{Regularization}
+\subsection{Regularization}\label{regularization}
 
 Regularization is one of the central topics is the Machine Learning framework. The goal of is to reduce the generalized error, namely the error on a test set, while not modifying the error on the training set. The regularization topic is directly connected to the overfitting issue described in the previous section and is in fact one of the most robust ways to prevent the issue. 
 
@@ -465,7 +465,7 @@ The choices for the $\Omega(\mathbf{w})$ function are mainly restricted to two a
 The main difference between the two is that the L1 regualarization tends to reduce the number of features that influences the final prediction while the L2 reduces the influence that each feature has on it.
 
 
-\subsection{Dropout}
+\subsection{Dropout}\label{dropout}
 
 Another popular technique often implemented to avoid overfitting is the so-called dropout. The concept behind this technique is rather simple: given an hyperparameter\footnote{Hyperparameters are parameters of the network estimated before the start of the training and keeping fixed furing the whole procedure. Example of other hyperparameters are the learning rate of the optimizers and parameter $\lambda$ for the regularization.} $\rho\in [0,1]$, called "dropout rate", at each training epoch each neuron has a probability $\rho$ of being stopped. A stopped neuron is completely ignored and not updated during the entire iteartion.
 
