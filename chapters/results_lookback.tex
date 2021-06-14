@@ -1,0 +1,59 @@
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Loss function with lookback $L=10$]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_10_20210613-180735__type_1branch_no_pool__st_scale_sub__lb_10__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100__loss.pdf}
+            \label{fig:lb_10_loss}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Accuracy with lookback $L=10$]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_10_20210613-180735__type_1branch_no_pool__st_scale_sub__lb_10__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100___accuracy.pdf}
+            \label{fig:lb_10_acc}
+        }
+    \end{minipage}
+        \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Loss function with lookback $L=20$]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_20_20210613-180946__type_1branch_no_pool__st_scale_sub__lb_20__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100__loss.pdf}
+            \label{fig:lb_20_loss}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Accuracy with lookback $L=20$]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_20_20210613-180946__type_1branch_no_pool__st_scale_sub__lb_20__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100___accuracy.pdf}
+            \label{fig:lb_20_acc}
+        }
+    \end{minipage}    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Loss function with lookback $L=30$]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_30_20210613-181249__type_1branch_no_pool__st_scale_sub__lb_30__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100__loss.pdf}
+            \label{fig:lb_30_loss}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Accuracy with lookback $L=30$]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_30_20210613-181249__type_1branch_no_pool__st_scale_sub__lb_30__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100___accuracy.pdf}
+            \label{fig:lb_30_acc}
+        }
+    \end{minipage}
+
+
+    \caption{lookback analysis}
+    \label{fig:res_lb_val}
+\end{figure}
+

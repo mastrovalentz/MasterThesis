@@ -237,31 +237,31 @@ does not correspond to the full dataset. The full dataset, composed of the $\bar
 
 For each device the subsets are randomly created using the 60\% of the total number of samples for the training set and the 20\% for both the validation and test set.
 
-In \tabref{4sicsdev} and \tabref{iotdev} the chosen device classes alongside with the device used for the creation of the dataset are reported. In the table the number of elements for each device of a specific class is also reported.
+In \tabref{tab:4sicsdev} and \tabref{tab:iotdev} the chosen device classes alongside with the device used for the creation of the dataset are reported. In the table the number of elements for each device of a specific class is also reported.
 
 
 
 
 \begin{table}
 \centering
-\begin{tabular}{llcccc}
+\begin{tabular}{llrrrr}
 \toprule
 \textbf{Device Class} & \textbf{Devices} & \multicolumn{4}{c}{\textbf{Number of samples}} \\
 & & Training & Validation & Test & Total \\
 \midrule
-\multirow{1}{*}{PLC}      & dev1& 10000 & 10000 & 10000 & 10000  \\
-                         & dev2 & 10000 & 10000 & 10000 & 10000  \\
+\multirow{1}{*}{PLC} & Siemens SIMATIC S7-1200 & 6426 & 2143 & 2143 & 10712  \\
+                     & xLogic x-Messenger & 3572 & 1192 & 1192 & 5956  \\
 \midrule
-\multirow{1}{*}{Camera}  & & 10000 & 10000 & 10000 & 10000 \\
+\multirow{1}{*}{Camera}  & AXIS 206 & 6679 & 2227 & 2227 & 11133 \\
 \midrule
-\multirow{1}{*}{Switch} & & 10000 & 10000 & 10000 & 10000 \\
+\multirow{1}{*}{Switch$^*$} & Moxa EDS-508A  & 9000 & 3000 & 3000 & 15000 \\
 \midrule
-\multirow{1}{*}{Firewall}& & 10000 & 10000 & 10000 & 10000 \\
+\multirow{1}{*}{Firewall}& Hirchmann EAGLE 20 Tofino & 3903 & 1301 & 1301 & 6505 \\
 \midrule
-\multirow{1}{*}{Router} &  &10000 & 10000 & 10000 & 10000  \\
+\multirow{1}{*}{Router$^*$} & Westermo Lynx 3643-0105  & 9000 & 3000 & 3000 & 15000  \\ 
 \midrule
 \midrule
-Total & & 10000 & 10000 & 10000 & 10000 \\
+Total & & 38584 & 12861 & 12861 & 64306 \\
 \bottomrule
 \end{tabular}
 \caption{tabella 4sics classi}
@@ -269,28 +269,43 @@ Total & & 10000 & 10000 & 10000 & 10000 \\
 \end{table}
 
 
+
+
+
+
+
+
+
+
 \begin{table}
 \centering
-\begin{tabular}{llcccc}
+\begin{tabular}{llrrrr}
 \toprule
 \textbf{Device Class} & \textbf{Devices} & \multicolumn{4}{c}{\textbf{Number of samples}} \\
 & & Training & Validation & Test & Total \\
 \midrule
-\multirow{1}{*}{PLC}      & dev1& 10000 & 10000 & 10000 & 10000  \\
-                         & dev2 & 10000 & 10000 & 10000 & 10000  \\
+\multirow{3}{*}{Camera}  & D-LinkCam     & 1348 & 449 & 449 & 2246  \\
+                         & D-LinkDayCam  & 332 & 110 & 110 & 552  \\
+                         & EdnetCam      & 105 & 35 & 35 & 175  \\
 \midrule
-\multirow{1}{*}{Camera}  & & 10000 & 10000 & 10000 & 10000 \\
+\multirow{2}{*}{Light Switch} & HueSwitch & 1396 & 466 & 466 & 2328 \\
+                             &  WeMoInsightSwitch & 830 & 342 & 342 & 1714  \\
 \midrule
-\multirow{1}{*}{Switch} & & 10000 & 10000 & 10000 & 10000 \\
+\multirow{3}{*}{Sensor} &  D-LinkSensor  & 1056 & 352 & 352 & 1760 \\
+                         & D-LinkDoorSensor  & 1100 & 366 & 366 & 1832  \\
+                         & D-LinkWaterSensor  & 1184 & 394 & 394 & 1972  \\
 \midrule
-\multirow{1}{*}{Firewall}& & 10000 & 10000 & 10000 & 10000 \\
+\multirow{4}{*}{Smart Plug}& D-LinkSwitch  & 1113 & 371 & 371 & 1855 \\
+                          & EdimaxPlug1101W & 806 & 269 & 269 & 1344  \\
+                          & HomeMaticPlug & 449 & 150 & 150 & 749  \\
+                          & TP-LinkPlugHS110 & 457 & 140 & 140 & 697  \\
 \midrule
-\multirow{1}{*}{Router} &  &10000 & 10000 & 10000 & 10000  \\
 \midrule
-\midrule
-Total & & 10000 & 10000 & 10000 & 10000 \\
+Total & & 12056 & 2584 & 2584 & 17224 \\
 \bottomrule
 \end{tabular}
 \caption{tabella 4sics classi}
 \label{tab:iotdev}
 \end{table}
+
+
