@@ -108,10 +108,70 @@ As for the previous model we evaluate the model performances using a confusion m
 
 \section{"Unseen" device classification}\label{res_unseen}
 
-In the previous section we show that the proposed model is able, with great accurcay, of correctly of performing the identification of a device.
+In the previous section we show that the proposed model is able, with great accuracy, of correctly of performing the identification of a device. We now want to try to use the trained model in order to classify an "unseen" device.
 
+More precisely we are interested in taking a processing the time series from device that were not included in the previously described datasets but that bolong to one of the classes the classifier was trained to distinguish. Our goal is to see if the classifier is able to recognize similarities between the device he was trained on and completely new devices. This test has a is particularly interesting due to how it translates in a real world application. In the real world in fact we can create more powerful classifiers using deeper architecture but mostly creating very big datasets with tens if not hundreds of devices inside. The OT and IoT worlds however are continuously evolving and new devices are developed each year. The ability of the classifier of identifying a completely new device will then be fundamental in order for the model to keep his performances at the expected level when new devices are introduced in a network. 
+
+For each dataset we chose two different devices that were not part of the datasets described in \tabref{tab:4sicsdataset} and \tabref{tab:iotdataset} and processed their time series using exactly the same procedure. After this we used the trained classifiers to predict the class of each processed time series. The final class prediction will then be the class with the highest number of time series assigned. The result are shown as histogram in \figref{fig:4sics_unseen} and \figref{fig:iot_unseen} respectively for the 4SICS and IoT dataset. 
+
+
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[c]{0.49\linewidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Class prediction of an "unseen" PLC]{
+        \includegraphics[width=\textwidth]{images/results/4sics_clasf_plc1_recognition.pdf}
+            \label{fig:4sics_unseen_plc}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\linewidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Class prediction of an "unseen" Router]
+        {  \includegraphics[width=\textwidth]{images/results/4sics_clasf_router_recognition.pdf}
+            \label{fig:4sics_unseen_router}
+        }
+    \end{minipage}%
+    \caption{confronto}
+            \label{fig:4sics_unseen}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[c]{0.49\linewidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Class prediction of an "unseen" Camera]{
+        \includegraphics[width=\textwidth]{images/results/iot_clasf_cam_recognition.pdf}
+            \label{fig:iot_unseen_camera}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\linewidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Class prediction of an "unseen" Light Switch]
+        {  \includegraphics[width=\textwidth]{images/results/iot_clasf_switch_recognition.pdf}
+            \label{fig:iot_unseen_light}
+        }
+    \end{minipage}%
+    \caption{confronto}
+            \label{fig:iot_unseen}
+\end{figure}
+
+As we can see in all four cases the trained classifiers are able to correctly classify the device. It is however important to notice that not all the predictions are done with the same accuracy. More specifically we can see that for the devices belonging to the Router and Camera class more than 95\% time series have been correctly classified. The devices belonging to the PLC and Light Switch class on the other hand despite being correctly classified present a non negligible fraction of missclassified time series.
+
+This can be expected since we are considering devices that were not part of the training dataset and the ability alone of the classifier of correctly identifying them is already a great achievement. More precise classification can probably using larger training dataset with more considered devices in different network configurations.
 
 
 \section{Discussion}
 
-Looking at the results obtained for both datasets we can draw some conclusion. The first important thing to highlight is the very high test accuracy obtained in both cases 
+In the previous sections we evaluated the performances of the proposed architectures over the two datasets. The results show that the classifiers are able to solve the identification task with grate test accuracy. Looking at the loss function and accuracy plot we see a regular behaviour allowing us to exclude the presence of over or under fitting behaviuor. This fact, alongside with the overall test accuracy obtained, validates the choice made for the architecture and lookback value in both situations.
+
+Looking at the presented confusion matrices we estimated the overall test accuracy obtaining very high accuracy values in both cases. This translates, in a real world application, in the ability, of a trained classifier, in correctly recognizing a device that was included in its training dataset with great precision.
+
+The use of trained classifier to identify devices that were not included in the training dataset show that the proposed architectures are able to recognize similarities in the device behaviour and, consequently, of correctly classifying them. This result is really important since demonstrates the capability of a trained classifier to easily adapt to new devices that can be introduced inside of a network and that may not have been included in its training dataset. In a real world application this translate in the possibility of truly implementing this type of classifier and a device identifier without the necessity of executing a new training procedure whenever a new device is connected to the network.
