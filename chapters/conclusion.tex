@@ -1,5 +1,12 @@
 \chapter{Conclusions}
 
-\lipsum[1-8]
+We show how to create and preprocess a dataset to use in order to train a Neural network classifier with the goal of performing a device identification task. The dataset is created using the traffic data of the devices inside of a network and combines the time series of the traffic from/to each device with the information about the protocols used by each device to communicate.
+The combination of this two types of information provides a strong representation of the devices which allows the proposed models to reach high accuracy values.
+
+We proposed a Neural Network architecture, shown in \figref{fig:1b_model}, composed of both convolutional layers, for the analysis of traffic time series, and dense layers, for the analysis of the communication protocol and the final prediction. Some small variations of this architecture, such as then one shown in \figref{fig:1bnp_model}, were also presented. 
+
+The proposed model was trained over two different dataset: the 4SICS dataset, containing the traffic of an industrial network, and the IoT Sentinel dataset, containing the traffic information of many IoT devices that can be found in modern houses. In both cases the training procedure results in a well performing classifier, with a test  accuracy reached by the trained classifier is of 96.2\% and 98.6\% for the 4SICS and IoT sentinel dataset respectively. During the trainining the loss function and accuracy was also monitored over a validation set and no sign of over or under fitting behaviour was observed.
+
+A further test of the trained classifier was performed over "unseen" devices, namely devices that are not included in the training dataset. The classification of this devices show that the classifier is able, with different degree of accuracy, to correctly classify also this devices. This last result is really important since, in a real world application, translates in the ability of the proposed approach to perform the identification of not only known devices, with already processed traffic information, but also completely new devices that may have been developed after the classifier was trained.
 
 
