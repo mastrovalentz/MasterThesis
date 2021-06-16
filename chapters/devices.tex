@@ -10,34 +10,33 @@ In this chapter we will first introduce the classification task, under which the
 \section{The classification task}\label{classification}
 
 In the machine learning framework we indicate with classification the task of associating a particular label to a given object. 
-
-Indicating with $x_i$ the i-th entry of the input dataset $\mathcal{D}$, our goal is associating it to a label $y_i\in\mathcal{Y}$, were $\mathcal{Y}$ is the set of all possible labels. In our case this association is performed using an ANN that, as described previously, can be represented by a set $\mathcal{F}_{N_L} = \left\{ f_N(\bar{x}), \boldsymbol{w}, \bar{b}\right\}$, in this way we are substantially using the $\mathcal{F}_{N_L}$ set a a map:
-\begin{equation}
-    \begin{aligned}
-        \mathcal{F}_{N_L}: & \mathcal{D} &\to & \mathcal{Y} \\
-        & x_i &\to & y_i \\
-    \end{aligned}
-\end{equation}
-
+Indicating with $x_i$ the i-th entry of the input dataset $\mathcal{D}$, our goal is to associate it to a label $y_i\in\mathcal{Y}$, where $\mathcal{Y}$ is the set of all possible labels. In our case this association is performed using an ANN that, as described previously, can be represented by a set $\mathcal{F}_{N_L} = \left\{ f_N(\bar{x}), \boldsymbol{w}, \bar{b}\right\}$, in this way we are substantially using the $\mathcal{F}_{N_L}$ set a a map
+$\mathcal{F}_{N_L}: \mathcal{D} \to  \mathcal{Y}$ such that $\mathcal{F}_{N_L}(x_i)=y_i$:
+%\begin{equation}
+%    \begin{aligned}
+%        \mathcal{F}_{N_L}: & \mathcal{D} &\to & \mathcal{Y} \\
+%        & x_i &\to & y_i \\
+%    \end{aligned}
+%\end{equation}
 Depending on the label set $\mathcal{Y}$ we can divide the classification tasks in different subgroups, the main ones being:
-\begin{itemize}
+\begin{itemize}[]
     \item \textbf{Binary classification}: this group is composed of tasks with only to possible outcomes, from which the "binary" adjective comes, example of this tasks are:
     \begin{itemize}
         \item Spam detection: identify a message as spam or not
     \item Signal over background discrimination: in field such as particle physics a common task is discriminating between signal and background events
     \end{itemize}
-    \item \textbf{Multi-class classification}: is this group the label set has more than two possible labels but still a finite number of them, an example of tasks belonging to this group is:
+    \item \textbf{Multi-class classification}: tasks of this group presents label set with more than two possible labels but still a finite number of them, an example of this is:
     \begin{itemize}
         \item Writing recognition: recognize and classify written digits and/or letters
     \end{itemize}
     \item \textbf{Multi-label classification}: tasks belonging to this group are characterized by the presence of multiple label
-    datasets. In this case the labels are represented by an array of values $\bar{y}_i$ instead of being singular values. An example of this type of classification is:
+    sets. In this case the labels are represented by an array of values $\bar{y}_i$ instead of being singular values. An example of this type task is:
     \begin{itemize}
         \item Photo classification: recognize multiple elements in a photo, e.g. given the photo of an house recognize windows, doors, etc...
     \end{itemize}
 \end{itemize}
 
-Our case study, as we will see in \secref{chap4}, belongs to the multi-class classification group since our goal is to identify the device type among many possible classes. 
+Our case study, as previously said, has the goal of identifying the device type among many possible choice and therefore belongs to the multi-class classification group.
 
 
 \section{Network devices and identification}\label{identification}
@@ -46,19 +45,17 @@ One of the reasons of the device identification importance lies in the cybersecu
 
 In the past, when working on small scale networks of few connected devices, it was possible to manually keep a database of the devices classified using a "standard" identifier, such as their IP or MAC address. This is however impossible nowadays, not only due to the scale of the network, which can be of thousands of devices, but also due to the the fact that devices may have multiple interfaces, such as Wi-Fi and LTE for a smartphone, resulting in a dynamic change of the aforementioned identifiers.
 
-In order to take this problem we propose a method based on the use of Artificial Neural Network. The whole approach will be described in detail in the following chapters but the main idea is to utilize the traffic stream information to perform the identification. More precisely we are going to create an input dataset were each device is represented by a set of time series of its traffic inside the network. As stated before there exists an a wide variety of devices therefore creating networks of different topology. For this reason we decided to utilize two completely different, publicly available, datasets:
-\begin{itemize}
-    \item \textbf{4SICS dataset}: this dataset contains traffic stream collected at an industrial cyber security conference. This dataset represent an industrial network with many PLCs and other industrial equipments, such as firewalls and switches.
-    \item \textbf{IoT Sentinel Dataset}: this dataset was used in the "IoT SENTINEL" publication in the IEE ICDCS publication for experiments in IoT device identification. This dataset contains information of many smart home devices, effectively representing what may be a domestic network.
-\end{itemize}
+In order to tackle this problem we propose a method based on the use of Artificial Neural Network. The whole approach will be described in detail in the following chapters but the main idea is to utilize the traffic stream information to perform the identification. More precisely we are going to create an input dataset where each device is represented by a set of time series of its traffic inside the network. As stated before there exists a wide variety of devices therefore creating networks of different topology. For this reason we decided to utilize two completely different, publicly available, datasets: the 4SICS dataset and the IoT Sentinel dataset, respecttively described in \secref{4sics_sec} and \secref{iot_sec}.
 
-\subsection{4SICS dataset}
+\subsection{4SICS dataset}\label{4sics_sec}
 
-\begin{table}[!h]
+The {4SICS dataset} contains traffic stream collected at an industrial cyber security conference. This dataset represent an industrial network with many PLCs and other industrial equipments, such as firewalls and switches. The full list of devices contained in the dataset is reported in \tabref{tab:4sicsdevlist}
+
+\begin{table}[H]
     \centering
     \begin{tabular}{l|l|l}
     \toprule
-        IP address & Device name & Device type  \\
+        IP address & Device model & Device type  \\
     \midrule
         192.168.88.15 & DirectLogic 205  & PLC \\
         192.168.88.20 & Phoenix Contact FL IL 24 BK-PAC & Ethernet bus coupler \\
@@ -66,33 +63,32 @@ In order to take this problem we propose a method based on the use of Artificial
         192.168.88.49 & AXIS 206 & Network Camera\\
         192.168.88.75 & Hirchmann EAGLE 20 Tofino  & Firewall \\
 192.168.88.30 & Siemens SIMATIC S7-1200 & PLC \\
-192.168.88.91/95  & RUGGEDCOM RS910 & Serial device server  and ethernet switch \\
+192.168.88.91/95  & RUGGEDCOM RS910 & Serial device server  \\
 192.168.89.1  & RUGGEDCOM RX1100  & Router \\
 192.168.88.50 & Red Lion DSP  & Protocol converter \\
-192.168.88.60 & Moxa EDS-508A & Switch \\
-192.168.88.61 & Moxa EDS-508A & Switch \\
+192.168.88.60/61 & Moxa EDS-508A & Switch \\
 192.168.88.70 & Cisco Catalyst 2955 & Switch \\
 192.168.88.80 & Moxa UC-7112 & Embedded computer \\
 192.168.88.100 & HOST Engineering MB-gateway & Modbus gateway \\
 192.168.88.51 & Beckhoff CX1010 & Embedded computer \\
 192.168.88.85 & xLogic x-Messenger  & WiFi PLC \\
-192.168.88.105 & & TCP/IP to RS-232/422/484 Converter \\
+192.168.88.105 &TCP/IP to RS-232/422/484 Converter & Converter \\
 192.168.88.1 & Westermo Lynx 3643-0105 & Router \\
 192.168.87.1 & Westermo Lynx 3643-0105 & Router \\
 10.10.10.10  & Siemens SIMATIC S7 & PLC \\
-10.10.10.30  & & Windows PC \\
+10.10.10.30  & Windows PC & Windows PC \\
     \bottomrule        
     \end{tabular}
-    \caption{4sics dataset}
-    \label{tab:4sicsdataset}
+    \caption{Devices contained in the 4SICS dataset traffic file. In the dataset devices are identified using their IP address, reported alongside with the device model and type. }
+    \label{tab:4sicsdevlist}
 \end{table}
 
-\subsection{IoT device dataset}
+\subsection{IoT device dataset} \label{iot_sec}
+
+The {IoT Sentinel Dataset} was used in the "IoT SENTINEL" publication in the IEE ICDCS, for experiments in IoT device identification. This dataset contains information of many smart home devices, effectively representing what may be a domestic network. The full list of devices contained in the dataset is reported in \tabref{tab:iotdevlist}
 
 
-
-
-\begin{table}[!h]
+\begin{table}[H]
     \centering
     \begin{tabular}{l|l|l}
     \toprule
@@ -125,13 +121,10 @@ In order to take this problem we propose a method based on the use of Artificial
   WeMoLink          & WeMo Link Lighting Bridge model F7C031vf & Bridge  \\
   WeMoSwitch        & WeMo Switch model F7C027de & Light switch \\
   Withings          &  Withings Wireless Scale WS-30 &  Weight scale\\
-        
-        
-        
     \bottomrule        
     \end{tabular}
-    \caption{iot sentinel dataset}
-    \label{tab:iotdataset}
+    \caption{Devices contained in the Iot Sentinel dataset traffic file. In the dataset devices are identified using their name, reported alongside with the device model and device type. Devices can also be identified using their MAC address, not reported in the table but available in the dataset file.}
+    \label{tab:iotdevlist}
 \end{table}
 
 

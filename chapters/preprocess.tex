@@ -1,18 +1,17 @@
 \chapter{Dataset preprocessing and features extraction}\label{chap4}
 
-In the previous chapter we introduced the concepts of Artificial Neural Networks in the Machine learning framework for the classification task. In this chapter we will discuss how, starting from the "raw" dataset we extract, clean and preprocess the main features which will compose the final dataset for the training of or classifier model.
+In the previous chapter we introduced the concepts of Artificial Neural Networks in the Machine learning framework for the classification task. In this chapter we will discuss how, starting from the "raw" dataset we can extract, clean and preprocess the main features which will compose the final dataset for the training of our classifier model.
 
-The datasets introduced in \chapref{chap3} can not be in fact directly used for the training due to the format used to \textbf{\large{DA FINIRE}}
+The datasets introduced in \chapref{chap3} can not be in fact directly used for the training. These datasets are in fact save as \texttt{pcap} files, a format used to save the information about the traffic of a network, which can not be directly interfaced with a ANN which requires as input a set of numeric values. In this chapter we will also describe which are the main features we are interested in studying in order to solve the identification task and list the devices considered to create the final dataset.
 
 \section{Traffic stream time series creation}
 
-Since all the traffic informattion is contained in \texttt{pcap} files it is necessary to extract and convert this information to a numeric format in order to utilize it as input of the model.
-To this we use the WireShark suite which allows to inspect \textit{pcap} files and offers various tools to process them. In particular the \texttt{tshark} command line tools allows to extract a time series of the traffic stream.
+Since all the traffic information is contained in \texttt{pcap} files it is necessary to extract and convert this information to a numeric format in order to utilize it as input of the model.
+To do this we use the WireShark suite which allows to inspect \textit{pcap} files and offers various tools to process them. In particular the \texttt{tshark} command line tools allows to extract a time series of the traffic stream.
 
-Using this tool the traffic time series are extracted in the following way: for each device listed in \tabref{tab:4sicsdataset} and \tabref{tab:iotdataset} we use its IP or MAC address to respectively filter the traffic data. After this for each device we export to a simple text file the total time series. To avoid notation issues in the following we will refer to the total time series of a device as ${\tilde{X}_i^j}$, where $i$ is a time index representing the value of the timeseries at a specif time and $j$ is an index representing the particular feature considered. 
-
-Each device is then represented by a multivariate timeseries. The features considered for this work alongisde with the j-index associated are reported in the following:
-\begin{itemize}
+Using this tool the traffic time series are extracted in the following way: for each device listed in \tabref{tab:4sicsdevlist} and \tabref{tab:iotdevlist} we use its IP or MAC address to respectively filter the traffic data. After this for each device we export to a simple text file the total time series. To avoid notation issues in the following we will refer to the total time series of a device as ${\tilde{X}_i^j}$, where $i$ is a time index representing the value of the timeseries at a specif time and $j$ is an index representing the particular feature considered. 
+Each device is then represented by a multivariate timeseries. The features considered for this work, alongisde with the associated j-index, are reported in the following:
+\begin{itemize}[noitemsep]
     \item ${\tilde{X}_i^1}$: Number of packages transferred \textbf{from} the specific device to the whole network
     \item ${\tilde{X}_i^2}$: Number of packages transferred \textbf{to} the specific device from the whole network
     \item ${\tilde{X}_i^3}$: Bytes transferred \textbf{from} the specific device to the whole network
@@ -20,55 +19,23 @@ Each device is then represented by a multivariate timeseries. The features consi
 \end{itemize}
 
 The choice of requesting a separate time series of the traffic from/to a specific device is particularly important since it allows the classifier to distinguish the behaviour of devices with mostly output traffic (e.g. sensors) from devices with mostly input traffic (e.g. control devices).
+In \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} an example of the time series extracted from some devices of the 4SICS and IoT dataset are respectively shown. It is important to notice that the IoT device time series is very short if compared to the 4SICS one; this fact is not purely coincidential, in fact all the time series from the IoT dataset present a small number of elements due to the small amount of captured traffic in the relative \texttt{pcap} file.
 
-In \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} an example of the time series extracted from a device of the 4SICS and IoT dataset are respectively shown. It is important to notice that the IoT device time series is very short if compared to the 4SICS one; this fact is not purely coincidential, in fact all the time series from the IoT dataset present a small number of elemnts due to the small amount of captured traffic in the relative \texttt{pcap} file.
 
-
-\begin{figure}[h]
+\begin{figure}[!h]
+\vspace{-5mm}
     \centering
-    \begin{minipage}[c]{0.49\linewidth}
-        \vspace{0pt}
-        \centering
-        \subfloat[Package from /to]{
-        \missingfigure{}
-    \label{fig:ts_example_pkg_4sics}
-        }
-    \end{minipage}%
-    \hfill%
-    \begin{minipage}[c]{0.49\linewidth}
-        \vspace{0pt}
-        \centering
-        \subfloat[Bytes from /to]{
-\missingfigure{}
-\label{fig:ts_example_bytes_4sics}
-        }
-    \end{minipage}%
-    \caption{confronto}
+   \includegraphics[width=\textwidth]{images/preprocessing/ts_4sics.pdf}
+    \caption{Extracted time series from the 4SICS dataset. From top to bottom: transferred bytes from and to the Moxa EDS-508A Switch (IP address 192.168.88.60), transferred bytes from and to the DirectLogic 205 PLC (IP address 192.168.88.15).}
     \label{fig:ts_example_4sics}
+    \vspace{-3mm}
 \end{figure}
-
-
-\begin{figure}[h]
+\begin{figure}[!h]
     \centering
-    \begin{minipage}[c]{0.49\linewidth}
-        \vspace{0pt}
-        \centering
-        \subfloat[Package from /to]{
-        \missingfigure{}
-    \label{fig:ts_example_pkg_4iot}
-        }
-    \end{minipage}%
-    \hfill%
-    \begin{minipage}[c]{0.49\linewidth}
-        \vspace{0pt}
-        \centering
-        \subfloat[Bytes from /to]{
-\missingfigure{}
-\label{fig:ts_example_bytes_iot}
-        }
-    \end{minipage}%
-    \caption{confronto}
+       \includegraphics[width=\textwidth]{images/preprocessing/ts_iot.pdf}
+    \caption{Extracted time series from the IoT sentinel dataset. From top to bottom: transferred bytes from/to the EdnetCam and from/to the TP-LinkPlugHS100.}
     \label{fig:ts_example_iot}
+    \vspace{-5mm}
 \end{figure}
 
 
@@ -76,9 +43,8 @@ In \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} an example of t
 \section{Time series preprocessing}
 
 Despite being now saved in a simple format the extracted time series are still not utilizable as input of a classifier. There are many reasons for this, the main ones being the irregularity of the time series length and not being normalized. To solve this issue we have to preprocess the time series before utilizing them for the classification. 
-
-The prepocessing is composed of the following steps:
-\begin{itemize}
+The prepocessing procedure is composed of the following steps:
+\begin{itemize}[noitemsep]
     \item {Length standardization} and data augmentation
     \item Time series selection and feature combination
     \item Feature normalization
