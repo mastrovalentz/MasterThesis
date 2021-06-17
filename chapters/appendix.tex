@@ -1,6 +1,39 @@
 \chapter{Alternative Classifier Structures} 
 \label{app:2bmodel}
-\textbf{\large FOTO 2 branch convo}
+
+In this appendix the architectures presented in \secref{2bmodels} are shown. As previously said these architectures features 2 separate convolutional branches receiving as input the output of a splitting layer. 
+In \figref{fig:2bap_model} the variant with implemented average pooling layers is shown, while the one with no pooling layers is shown in \figref{fig:2bnp_model}.
+
+As for the ones shown in \figref{fig:1b_model} and \figref{fig:1bnp_model} the implementation of these architectures was perfoemed using the Functional API of the Keras framework.
+
+All the main features and hyperparameters are the same as the ones for the architectures described in \chapref{chap5}, namely:
+\begin{itemize}
+    \item L2 loss function in each layer
+    \item ADAM optimizer
+    \item Dropout rate of 30\% after the dense layer in the communication protocol branch
+    \item Zero padding technique implemented in the architecture without pooling layers
+    \item ELU activation function after each hidden layer
+    \item Softmax activation function for the last layer
+\end{itemize}
+
+\begin{figure}
+   % \centering
+\hspace{-2cm}\includegraphics[width=1.3\textwidth]{images/models/model_2bap.pdf}
+\caption{{Structure of the proposed classifier 1B\_NP architecture. The name indicates the presence of two convolutional branch and the absence of pooling layers.}}    \label{fig:2bap_model}
+\end{figure}
+
+
+
+
+\begin{figure}
+  %  \centering
+    \hspace{-2cm}\includegraphics[width=1.3\textwidth]{images/models/model_2bnp.pdf}
+\caption{{Structure of the proposed classifier 1B\_NP architecture. The name indicates the presence of two convolutional branch and the absence of pooling layers.}}    \label{fig:2bnp_model}
+\end{figure}
+
+
+
 
 \chapter{Appendix B}
+\lipsum[1]
 \label{app:lb_bonus_res}
