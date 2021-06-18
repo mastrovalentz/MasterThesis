@@ -50,7 +50,7 @@ The prepocessing procedure, visually represented in \figref{fig:ts_processing}, 
     \item Feature normalization
 \end{itemize}
 
-\subsection{Length standardization and data augmentation}
+\subsection{Length standardization and data augmentation} \label{splitting}
 
 One the most important requirement, for the use of a dataset as input of Neural Netowrk classifier, is for its elements to be of uniform dimension. As we said previously the length of an extracted time series is not regular since it depends on the amount of traffic captured for that specific device.
 
@@ -234,7 +234,7 @@ The devices used to create the final datasets, grouped by device classes, alongs
 Total & & 38584 & 12861 & 12861 & 64306 \\
 \bottomrule
 \end{tabular}
-\caption{Device used for the creation of the final 4SICS dataset for the device identification, grouped by device type.}
+\caption{Device used for the creation of the final 4SICS dataset for the device identification, grouped by device type. The time series of this dataset have been preprocessed using the "augmented" splitting procedure, described in \secref{splitting} with a lookback value $L=100$.}
 \label{tab:4sicsdev}
 \end{table}
 
@@ -267,7 +267,7 @@ Total & & 38584 & 12861 & 12861 & 64306 \\
 Total & & 12056 & 2584 & 2584 & 17224 \\
 \bottomrule
 \end{tabular}
-\caption{Device used for the creation of the final IoT Sentinel dataset for the device identification, grouped by device type. Statistics regarding the number of samples in each subset, after the preprocessing procedure, is also reported.}\label{tab:iotdev}
+\caption{Device used for the creation of the final IoT Sentinel dataset for the device identification, grouped by device type.The time series of this dataset have been preprocessed using the "augmented" splitting procedure, described in \secref{splitting} with a lookback value $L=30$.}\label{tab:iotdev}
 \vspace{12cm}
 \end{table}
 
