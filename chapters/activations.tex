@@ -15,7 +15,7 @@
         0  & \text{if } x \leq 0 
   \end{cases}
 \end{align}
-The ReLU is a continuous function with a point of non differentiability in 0. Despite being non differentiable this function is still implemented, mostly in the hidden layers of a network, due to its fast computation time. 
+The ReLU\cite{relu} is a continuous function with a point of non differentiability in 0. Despite being non differentiable this function is still implemented, mostly in the hidden layers of a network, due to its fast computation time. 
 \end{minipage}
 \end{figure}
 
@@ -36,7 +36,7 @@ The ReLU is a continuous function with a point of non differentiability in 0. De
         x  & \text{if } x > 0 
   \end{cases}
 \end{align}
-The ELU activation functions is an improvement over the ReLU. In this case the negative values have an actual activation instead of being set to zero which may help the estimation of the network parameters. The drawback of choosing this function in an increase in the computational cost since an exponential operation is included. 
+The ELU\cite{elu} activation functions is an improvement over the ReLU. In this case the negative values have an actual activation instead of being set to zero which may help the estimation of the network parameters. The drawback of choosing this function in an increase in the computational cost since an exponential operation is included. 
 \end{minipage}
 \end{figure}
 
@@ -53,7 +53,7 @@ The ELU activation functions is an improvement over the ReLU. In this case the n
    \begin{equation}
        a(x) = \frac{1}{2} x \left( 1+\text{erf} \left( \frac{x}{\sqrt{2}}\right)\right)
    \end{equation}
-   This is one of the newest activation functions. It was implemented in some of the most recent Deep Learining application proving to be one of the best activations in the Natural Language Processing field. 
+   The GELU\cite{gelu} is one of the newest activation functions. It was implemented in some of the most recent Deep Learining application proving to be one of the best activations in the Natural Language Processing field\cite{bert,gpt}. 
 \end{minipage}
 \end{figure}
 

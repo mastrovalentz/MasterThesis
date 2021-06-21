@@ -8,7 +8,7 @@ Deep learning methods are a part of this family and have been applied in many fi
 
 Artificial Neural Networks (ANNs in the following) are also denoted as biological-inspired networks; this denominations derives from their structure, which is inspired from  the brain of the animals. As for a natural brain, where each neuron communicates with others through the synapses, ANN are computing systems based on a series of units, called artificial neurons, connected among themselves. 
 
-The simplest model used to represent an artificial neuron, capable of simple learning tasks, is the perceptron, invented in 1958 by Frank Rosenblatt, which, given a series of binary input values $\bar{x}=\{x_1,\dots, x_n\}$ returns a single binary output value $f(\bar{x}, \alpha)$, where $\alpha$ are the internal parameters of the perceptron. 
+The simplest model used to represent an artificial neuron, capable of simple learning tasks, is the perceptron, invented in 1958 by Frank Rosenblatt\cite{perceptron}, whose work was inspired by the Warren McCulloch and Walter Pills\cite{nielsen}. A perceptron, given a series of binary input values $\bar{x}=\{x_1,\dots, x_n\}$, returns a single binary output value $f(\bar{x}, \alpha)$, where $\alpha$ are the internal parameters of the perceptron. 
 
 The internal structure on the perceptron, represented in \figref{fig:perceptron}, is composed of a series of real-valued weights $\bar{w}=\{w_1,\dots,w_n\}$, a bias value $b$ and a threshold $\delta$. These parameters are used by the decision function $f$ to estimate the output value:
 
@@ -159,27 +159,27 @@ The key elements of a convolutional layers are the so-called filters. The output
   \includestandalone[width=0.5\textwidth]{images/networks/CNN}
     \caption{Example of the combination of a convolutional layer with one 1 dimensional filter and a max pooling layer performing.  }
     \label{fig:cnn_tot}
+    \vspace{-1cm}
 \end{wrapfigure}
 The filters of a CNN have the same role of the weight tensor of a DNN and are in fact the free parameters of the network, whose optimization is performed during the training. In \figref{fig:cnn_filter} an example of the result of the application of a filter to a 2-dimensional input is shown.
 
-In most of the common implementations however CNNs are not composed of only convolutional layers but are made of an alternation of convolutional and pooling layers, where the latter is used to  perform a non-linear down-sampling on the output of a convolutional layer. An example of the combination of these two layers is shown in \figref{fig:cnn_tot}
-
-
+In most of the common implementations however CNNs are not composed of only convolutional layers but are made of an alternation of convolutional and pooling layers, where the latter is used to  perform a non-linear down-sampling on the output of a convolutional layer. An example of the combination of these two layers is shown in \figref{fig:cnn_tot}.
 More specifically a pooling layer divides its input in a series of region called "pools" and applies a function to each one.
 The resulting value from all pools is then combined and used as the output of the layer.
+
 
 Many choices for both the size of the pools and the function to apply are possible however one of the most common implementation is a max-pooling layer with a 2x2 pool size, namely a layer that divides the input in 2x2 regions and takes the highest value from each of them. A example of the application of this type of layer is shown in \figref{fig:cnn_pool} 
 
 \begin{figure}[h]
     \centering
-      \includestandalone[height=6cm, width=\textwidth]{images/networks/cnn_filter}
+      \includestandalone[ width=\textwidth]{images/networks/cnn_filter}
     \caption{Example of the application of a filter over a 2 dimensional input. The resulting matrix is computed as the discrete convolution of the input with the filter values.}
     \label{fig:cnn_filter}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-     \includestandalone[height=5cm, width=0.85\textwidth]{images/networks/cnn_pool}
+     \includestandalone[ width=0.78\textwidth]{images/networks/cnn_pool}
     \caption{Example of the application of the max pooling operation over a 2 dimensional input, with 2x2 pool size. The resulting matrix is computed as the maximum value of each 2x2 pool.}
     \label{fig:cnn_pool}
 \end{figure}
@@ -195,7 +195,7 @@ Many choices for both the size of the pools and the function to apply are possib
 
 \section{Loss functions} \label{lossfunction}
 
-After the choice of the ANN type and its internal structure the next step is to choose the so-called loss function, also known as risk or cost function. The role of the loss function is to quantify how well the predicting power of the network is and its choice plays a crucial role in the learning procedure.
+After the choice of the ANN type and its internal structure the next step is to choose the so-called loss function, also known as risk or cost function\cite{lossfunc}. The role of the loss function is to quantify how well the predicting power of the network is and its choice plays a crucial role in the learning procedure.
 
 In most Deep Learning application the role of the learning algorithm is in fact to estimate the best set of parameters that are able to minimize the value of the loss function over a set of given input values. The choice of this function is therefore really important since it may greatly influence the final ability of the model of producing correct predictions.
 
@@ -206,13 +206,13 @@ As for the activation functions many choices of the loss function are possible. 
     \begin{equation}
         L_{MSE}= \frac{1}{N}\sum_{i=1}^N \left(y_{i,T}-y_{i,P}\right)^2
     \end{equation}
-    This function is mostly implemented in regression tasks and is characterized by the heavy penalization imposed on predicted values very distant from their correct label.
+    This function is mostly implemented in regression tasks and is characterized by the heavy penalization imposed on predicted values very distant from their correct label. 
     \item \textbf{Mean Absolute Error} or \textbf{L1 Loss}:\\
     This loss computes the average of the absolute distance between the correct label associated to a sample, $y_{i,T}$ and the predicted one, $y_{i,P}$:
     \begin{equation}
         L_{MAE}= \frac{1}{N}\sum_{i=1}^N \left|y_{i,T}-y_{i,P}\right|
     \end{equation}
-    Similarly to the L2 loss also the L1 is used in regression tasks but it penalizes more many small deviation from the correct label than few very distant ones. Respect to the L2 loss the L1 has the drawback of needing more complex tools for the computations of the gradient. 
+    Similarly to the L2 loss also the L1 is used in regression tasks but it penalizes more many small deviation from the correct label than few very distant ones. The main drawback of the L1 loss is the necessity of more complex tools for the computations of the gradient, with respect to the L2 loss, whose gradient can be easily computed exploiting its mathematical properties. 
 \item \textbf{Hinge Loss}:\\
     The hinge loss is mostly famous for its implementation in Support Vector Machines (SVMs). As for the previous losses the Hinge one is a function of the true, $y_{i,T}$ and  predicted label, $y_{i,P}$ but with the constraint of them being either $\pm 1$:
     \begin{equation}
@@ -224,23 +224,30 @@ As for the activation functions many choices of the loss function are possible. 
         L_{BCE}= -\sum_{i=1}^N\left[ y_{i,T}\log(p_i)+
         \left(1- y_{i,T}\right)\log(1-p_i)\right]
     \end{equation}
-    This loss function is characterized by heavy penalization of confident but wrong predictions. 
+    This loss function heavily penalizes confident but wrong predictions. 
 \item \textbf{Categorical Cross Entropy Loss}:\\
-    This loss function is the natural generalization of the previous one. As such it is the standard function implemented in multi-class classification tasks. Considering a classification tasks with $M>2$ classes, we associate to i-th sample a set of probabilities $p_{i,c}$, which represent its probability of belonging to the class $c$ and a set of binary values $y_{i,c}$ whose value is 1 only for the correct class the sample belong to. Using this notation the loss function is defined as:
+    This loss function is the natural generalization of the previous one. As such it is the standard function implemented in multi-class classification tasks. Considering a classification tasks with $M>2$ classes, we can define: 
     \begin{equation}
-        L_{CCE} = -\sum{i=1}^N \sum_{c=1}=M  \left[
+        L_{CCE} = -\sum_{i=1}^N \sum_{c=1}^M  \left[
         y_{i,c}\log(p_{i,c}) + (1-y_{i,c})\log(1-p_{i,c})
         \right]
     \end{equation}
+    where $p_{i,c}$, represent the predicted probability of the i-th belongin to the class $c$ and $y_{i,c}$ is a binary number equal to 1 only for the true class of the sample.
+\item \textbf{Kullback-Leibler Divergence}:\\
+   This loss function, commonly used in mathematical statistic as a difference measure between distribution, has proven its efficiency also for Deep Learning methods\cite{kullbackeff, kullbackeff2}. Indicating with $p_i$ and $q_i$ respectively the predicted and true label of a sample:
+    \begin{equation}
+        L_{KL} = - \left( \sum_{i=1}^{M} p_{i} \log{q_{i}} - \sum_{i=1}^{M} p_{i} \log{p_{i}} \right)
+    \end{equation}
+    
 \end{itemize}
 
 
 \subsection{Overfitting and underfitting recognition} \label{fit_over_under}
 
-Aside from being the quantity used to estimate the optimal parameters of a predictor the loss function is also used to monitor the performance in search of over and under fitting bahaviour during the learning procedure. 
-This issues can be observed dividing the given dataset $\mathcal{D}$ in two parts: a training dataset $\mathcal{D_{Tr}}$ and a test dataset $\mathcal{D_{Te}}$\footnote{In many applications the dataset is not split in two but rather three subsets, namely the training $\mathcal{D_{Tr}}$, validation $\mathcal{D_{V}}$ and test $\mathcal{D_{Te}}$ set. In this case the validation set is used to monitor the eventual presence of over and under fitting while the test set is used to evaluate the final performance of the model. As we will see in the following chapters this strategy of division is also the one implemented in this work.}. As the name suggests the training dataset is used to train the predictor while the test set is used to verify the effective performance after the learning.
+Aside from being the quantity used to estimate the optimal parameters of a predictor the loss function is also used to monitor the performance in search of over and under fitting behaviour during the learning procedure. 
+This issues can be observed dividing the given dataset $\mathcal{D}$ in two parts: a training dataset $\mathcal{D}_{TR}$ and a test dataset $\mathcal{D}_{TE}$\footnote{In many applications the dataset is not split in two but rather three subsets, namely the training $\mathcal{D_{Tr}}$, validation $\mathcal{D_{V}}$ and test $\mathcal{D_{Te}}$ set. In this case the validation set is used to monitor the eventual presence of over and under fitting while the test set is used to evaluate the final performance of the model. As we will see in the following chapters this strategy of division is also the one implemented in this work.}. As the name suggests the training dataset is used to train the predictor while the test set is used to verify the effective performance after the learning.
 
-The overfitting issue is observable in cases where the prediction model adapts too well to the training set, failing to give good predictions on the test set. This issue is common in cases where the complexity of the model is too high compared to the size or structure of the given dataset or when the training is performed for too long. Possible ways to resolve the overfitting issue are using a simplified model or using some optimization techniques, such as the regularization and dropout, described in \secref{opt_tec}.
+The overfitting\cite{overfitting} issue is observable in cases where the prediction model adapts too well to the training set, failing to give good predictions on the test set. This issue is common in cases where the complexity of the model is too high compared to the size or structure of the given dataset or when the training is performed for too long. Possible ways to resolve the overfitting issue are using a simplified model or using some optimization techniques, such as the regularization and dropout, described in \secref{opt_tec}.
 The opposite of the overfitting is the so-called under fitting. This issue arises whenever there is still room for improving the model prediction capability. Possible ways to resolve this issue is the introduction of a more complex model or just increasing the training time.
 
 In order to visualize this two issues, lets for example consider the simple task of performing a polynomial fit over a given distribution, as shown in  \figref{fig:overunderfit}. The data samples in this figure have been generated from a second degree polynomial distribution plus some gaussian noise and divided in training, over which the fit is performed, and test samples. The distribution is then fitted with a first, second and 10-th degree polynomial and the MSE Loss, introduced before, is computed. As we can see the second order polynomial fit has similar training and the fit well represents both the distribution. On the other hand the first order fit instead has a very high training and test error which is a clear sign of the underfitting issue. Finally the 10-th order polynomial fit presents a very low training error and an high test error which indicates that the estimated distriubution is overfitted on the training set but does not represent effectively the full distribution.
@@ -312,7 +319,7 @@ In order to visualize this two issues, lets for example consider the simple task
 \section{Network parameters optimization}\label{weightoptimization}
 
 We have now illustrated the main choices for the creation of an ANN and for the loss function. We know focus on how ann ANN can be trained in order to give relevant prediction respect to the task we are able to solve. 
-As we saw in the previous section an ANN is composed by a set of free parameters, namely the weights and biases. The goal of our algorithm is then to find the best parameters able to minimize the value of the selected loss function. This is done using the so-called Backpropagation algorithm, described in \secref{backprop}. This algorithm provides a solid method to compute the gradient of the loss function with respect to the free parameter. The gradient of the loss function is then utilized to update the values of the weights and biases themselves through an optimization algorithm, such as the ones described in \secref{optalg}.
+As we saw in the previous section an ANN is composed by a set of free parameters, namely the weights and biases. The goal of our algorithm is then to find the best parameters able to minimize the value of the selected loss function. This is done using the so-called Backpropagation algorithm\cite{backprop}, described in \secref{backprop}. This algorithm provides a solid method to compute the gradient of the loss function with respect to the free parameter. The gradient of the loss function is then utilized to update the values of the weights and biases themselves through an optimization algorithm, such as the ones described in \secref{optalg}.
 These algorithms are iterated over the full network until a condition, which usually is a maximum number of iterations or a minimum loss value, is met. Each complete iteration of the full gradient estimation and parameter updating is called epoch.
 
 \subsection{Backpropagation algorithm}\label{backprop}
@@ -378,7 +385,11 @@ The pseudoce of the two procedures is respectively reported  in \algoref{alg:fow
 Once the gradient, with respect to each parameter, is computed we can update the parameters themselves. This is done using the so-called optimizers, namely algorithms whose goal is to find the optimal parameters to minimize a function.
 For sake of simplicity, in the following we will indicate with $\theta_t$ the value a generic free parameter of the network at the t-th iteration and with $g_{i,t}$ its gradient computed using the i-th sample of the dataset at the t-th iteration.
 
-As for the activation and loss function also the optimizers present multiple choices, one of the most common one is the so-called Mini-batch Gradient Descent (MGD), whose pseudo-code is presented in \algoref{alg:mgd}. This optimizer combines the ideas from two other optimizers: the Grandiet Descent(GD) and Stochastic Gradient Descent (SGD), where both can be derived as an extreme applications of it.
+As for the activation and loss function also the optimizers present multiple choices, in the following chapters we describe some of optmizers belonging to the Gradient Descent family, in \secref{opt_dg} and an a so-called adaptive optmizer, in \secref{adam}.
+
+\subsection{Gradient Descent optmizers}
+\label{opt_dg}
+One of the most common implemented optimizers, in the Machine Learning framework, ais the Gradient Descent optimizer alogside with its variants\cite{var_grad}. Among these one of the most effective is the so-called Mini-batch Gradient Descent (MGD), whose pseudo-code is presented in \algoref{alg:mgd}. This optimizer combines the ideas from two other optimizers: the Gradient Descent(GD) and Stochastic Gradient Descent (SGD), where both can be derived as an extreme applications of it.
 
 The MGD performs the update of a parameter after computing the gradient over a batch sample, namely a subset of the provided training set, of dimension $n_b$. The choice of the size of this batches greatly influences both speed and stability of the algorithm: bigger batch sizes will in fact result in a more stable convergence at the price of longer computations. Once the gradient is computed the parameters are updated using the following rule:
 \begin{equation}
@@ -389,31 +400,7 @@ where $\eta$ is a parameter called learning rate which quantifies the "speed" at
 
 The two extreme cases for this algorithm are the choice of performing the update for each sample in the training set, in which case we have the SGD algorithm, or performing the update after computing the gradient over the whole dataset, which correspond to the GD algorithm. 
 
-Another really popular and powerful choice for the optimization algorithm is the so-called Adaptive Moment Estimation optimizer, better known as ADAM. This optimizer belong, as the name suggests, to the group of adaptive optimizers. Optimizers of this group instead of using a fixed learning rate $\eta$, as in the MGD case, adapt the learning rate to each parameters.
-The power of this type of methods lies in its ability to adjust the amount of update a specific parameter receives, based on both the importance and the frequency of the features connected to it. 
-
-To do this the ADAM optimizer, whose pseudo-code is illustrated in \algoref{alg:adam}, uses the information on the gradients over the past iterations of the algorithm, while introducing three new parameter $\beta_1$, $\beta_2$ and $\epsilon$. As before the gradient can be computed over batches of different sizes but, for simplicity, we will indicate with $g_t$ the gradient computed over a mini-batch of arbitrary size. The first step of the algorithm is the computation of the following quantities:
-\begin{equation}
-\begin{aligned}
-m_{t} &=\beta_{1} m_{t-1}+\left(1-\beta_{1}\right) g_{t} \\
-v_{t} &=\beta_{2} v_{t-1}+\left(1-\beta_{2}\right) g_{t}^{2}
-\end{aligned}
-\end{equation}
-
-The $m_t$ and $v_t$ are respectively an estimation of the first and second momentum of the past gradient, namely the mean and not centered variance. The suggested values for the $\beta$ parameters are respectively $\beta_1=0.9$ and $\beta_2=0.999$. As observed by the original authors, the $m_t$ and $v_t$ values are however biased toward zero, due to them being initially set to a null value. To solve this problem they are scaled as:
-\begin{equation}
-\begin{aligned}
-\hat{m}_{t} &=\frac{m_{t}}{1-\beta_{1}^{t}} \\
-\hat{v}_{t} &=\frac{v_{t}}{1-\beta_{2}^{t}}
-\end{aligned}
-\end{equation}
-
-This values are now used to computed the update of the free parameter $\theta$ with the following rule:
-\begin{equation}
-\theta_{t+1}=\theta_{t}-\frac{\eta}{\sqrt{\hat{v}_{t}}+\epsilon} \hat{m}_{t}
-\end{equation}
-
-where $\eta$ is the generic learning rate and the suggested value for the $\epsilon$ variable is $\epsilon=10^{-8}$. It is also empirically shown that the ADAM algorithm is works really well with favorable results in the comparison to other algorithms of this type.
+\medskip
 
 \begin{algorithm}[H]
 \caption{Pseudo-code illustration of the updating procedure of a free parameter $\theta$ using the Mini-batch Gradient Descent (MGD) algorithm. In the following N represents the total number of elements in the full dataset. We also indicate with $x^{(i)}$ and $y^{(i)}_t$ the i-th sample of the dataset and its corresponding label and with $g_{i,t}$ the gradient computed using the i-th sample with respect to the parameter $\theta$ at the iteration t. }
@@ -438,11 +425,52 @@ where $\eta$ is the generic learning rate and the suggested value for the $\epsi
 
 
 
+\subsection{ADAM optimizer}
+\label{adam}
+Another really popular and powerful choice, in the machine learning framework, for the optimization algorithm is the so-called Adaptive Moment Estimation optimizer, better known as ADAM\cite{adam}. This optimizer belongs, as the name suggests, to the group of adaptive optimizers. Optimizers of this group instead of using a fixed learning rate, as in the MGD case, adapt the learning rate to each parameters.
+The power of this type of methods lies in its ability to adjust the amount of update a specific parameter receives, based on both the importance and the frequency of the features connected to it. 
+
+To do this the ADAM optimizer, whose pseudo-code is illustrated in \algoref{alg:adam}, uses the information on the gradients over the past iterations of the algorithm, while introducing three new parameter $\beta_1$, $\beta_2$, also called exponential decay rates, and $\epsilon$. \\
+As for the algorithms discussed previously, the gradient can be computed over batches of different sizes but, for simplicity, we will indicate with $g_t$ the gradient computed over a mini-batch of arbitrary size. 
+
+The first step of the algorithm is the computation of the following quantities:
+
+\begin{equation}
+\begin{aligned}
+m_{t} &=\beta_{1} m_{t-1}+\left(1-\beta_{1}\right) g_{t} \\
+v_{t} &=\beta_{2} v_{t-1}+\left(1-\beta_{2}\right) g_{t}^{2}
+\end{aligned}
+\end{equation}
+
+The $m_t$ and $v_t$ are respectively an estimation of the first and second momentum of the past gradient, namely the mean and not centered variance. The suggested values for the $\beta$ parameters are respectively $\beta_1=0.9$ and $\beta_2=0.999$. \\
+These values however can not be directly used to update the parameters since, as observed by the original authors, the $m_t$ and $v_t$ values are however biased toward zero, due to them being initially set to a null value. \\
+To solve this problem they are scaled as:
+
+\begin{equation}
+\begin{aligned}
+\hat{m}_{t} &=\frac{m_{t}}{1-\beta_{1}^{t}} \\
+\hat{v}_{t} &=\frac{v_{t}}{1-\beta_{2}^{t}}
+\end{aligned}
+\end{equation}
+
+\smallskip
+
+These values are now used to computed the update of the free parameter $\theta$ with the following rule:
+\begin{equation}
+\theta_{t+1}=\theta_{t}-\frac{\eta}{\sqrt{\hat{v}_{t}}+\epsilon} \hat{m}_{t}
+\end{equation}
+
+where $\eta$ is the so-called step size and the suggested value for the $\epsilon$ variable, used to stabilize the division, is $\epsilon=10^{-8}$. It is also empirically shown that the ADAM algorithm is works really well with favorable results in the comparison to other algorithms of this type.
+
+
+
 
 \begin{algorithm}[H]
 \caption{Pseudo-code illustration of the updating procedure of a free parameter $\theta$ using the Adaptive Moment Estimation (ADAM) algorithm. In the following N represents the total number of elements in the full dataset. We also indicate with $x^{(i)}$ and $y^{(i)}_t$ the i-th sample of the dataset and its corresponding label and with $g_{i,t}$ the gradient computed using the i-th sample with respect to the parameter $\theta$ at the iteration t. Suggested values for the parameters of are $\beta_1=0.9,\,\beta_2=0.999,\,\epsilon=10^{-8}$}\label{alg:adam}
 \begin{algorithmic}[1]
-\Require $\eta ,\, \beta_1,\,\beta_2,\,\epsilon$ \Comment Algorithm parameters and learning rate
+\Require $\eta$ \Comment Step size
+\Require $ \beta_1,\,\beta_2$ \Comment Exponential decay rates 
+\Require $\epsilon$ \Comment Constant for division stabilization
 \Require ${\theta}$ \Comment Initial free parameter
 \Require $n_b$\Comment Minibatch dimension 
 
@@ -470,6 +498,7 @@ where $\eta$ is the generic learning rate and the suggested value for the $\epsi
 \end{algorithmic}
 \end{algorithm}
 
+\newpage
 \section{Additional optimization techniques} \label{opt_tec}
 
 When the an ANN architecture reaches an high number of parameters and/or  presents really deep or complex architectures it is necessary to implement some other optimization techniques, in order for it to be able to solve the designated task. In this section we will focus on the two mostly implemented techniques, which are used in most of the common application.
@@ -491,15 +520,16 @@ The choices for the $\Omega(\mathbf{w})$ function are mainly restricted to two a
     \item \textbf{L2 regularization}: $\Omega_{L2}(\mathbf{w}) = \sum_{i=1}^N w_i^2$
 \end{itemize}
 
-The main difference between the two is the macroscopic effect obtained after their implementation. The L1 regularization in fact tends to reduce the number of features that influences the final prediction while the L2 regularization reduces the influence that each feature has on it.
+The main difference between the two is the macroscopic effect obtained after their implementation. The L1 regularization in fact tends to reduce the number of features that influences the final prediction while the L2 regularization reduces the influence that each feature has on it. The final choice between the two then depends on what the user wants to achieve but may also depend on the specific use case\cite{l1reg,l2reg}.
 
 
 \subsection{Dropout}\label{dropout}
 
-Another popular technique, often implemented to avoid overfitting, is the so-called dropout. The concept behind this technique is rather simple: given the hyperparameter\footnote{Hyperparameters are parameters of the network estimated before the start of the training and kept fixed during the whole procedure. Example of other hyperparameters are the learning rate of the optimizers and parameter $\lambda$ for the regularization.} $\rho\in [0,1]$, called "dropout rate", at each training epoch each neuron has a probability $\rho$ of being stopped. A stopped neuron is completely ignored and not updated during the entire iteration.
+Another popular technique, often implemented to avoid overfitting, is the so-called dropout\cite{srivastava}. The concept behind this technique is rather simple: given the hyperparameter\footnote{Hyperparameters are parameters of the network estimated before the start of the training and kept fixed during the whole procedure. Example of other hyperparameters are the learning rate of the optimizers and parameter $\lambda$ for the regularization.} $\rho\in [0,1]$, called "dropout rate", at each training epoch each neuron has a probability $\rho$ of being stopped. A stopped neuron is completely ignored and not updated during the entire iteration.
 An illustation of the implementation of the dropout is shown in \figref{fig:dropout}. The effectiveness of this method can be explained by considering the effect it has on the single neurons. When the dropout is implemented there is in fact less possibility for neighbour neurons to co-adapt in order to give a good prediction, resulting in an improved performance of the single units and in a more robust ANN as a whole.
 
-\begin{figure}
+\bigskip
+\begin{figure}[h]
     \centering
 \includestandalone[width=\textwidth]{images/networks/dropout}
 \caption{Example of the implementation of the dropout technique in a fully connected ANN model. The single neurons that are excluded after the dropout are indicated with crossed circles and their connection removed. }

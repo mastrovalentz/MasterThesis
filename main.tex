@@ -8,17 +8,19 @@
 \input{chapters/Title_page_Master_Physics}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
+\renewcommand{\baselinestretch}{1.2} 
 \tableofcontents
+\renewcommand{\baselinestretch}{1.5} 
 
 
 \input{chapters/abstract}
 
 \mainmatter
-%\input{chapters/intro}
-%\input{chapters/networks}
-%\input{chapters/devices}
-%\input{chapters/preprocess}
-%\input{chapters/models}
+\input{chapters/intro}
+\input{chapters/networks}
+\input{chapters/devices}
+\input{chapters/preprocess}
+\input{chapters/models}
 \input{chapters/results}
 \input{chapters/conclusion.tex}
 %
@@ -26,6 +28,7 @@
 \input{chapters/appendix}
 \backmatter
 
-\printbibliography
+\input{biblio}
+%\printbibliography
 
 \end{document}

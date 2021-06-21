@@ -1,13 +1,13 @@
 \chapter{Dataset preprocessing and features extraction}\label{chap4}
 
 In the previous chapter we introduced the concepts of Artificial Neural Networks in the Machine learning framework for the classification task. In this chapter we will discuss how, starting from the "raw" dataset we can extract, clean and preprocess the main features which will compose the final dataset for the training of our classifier model.
-
-The datasets introduced in \chapref{chap3} can not be in fact directly used for the training. These datasets are in fact save as \texttt{pcap} files, a format used to save the information about the traffic of a network, which can not be directly interfaced with a ANN which requires as input a set of numeric values. In this chapter we will also describe which are the main features we are interested in studying in order to solve the identification task and list the devices considered to create the final dataset.
+The datasets introduced in \chapref{chap3} can not be in fact directly used for the training. These datasets are in fact save as \texttt{pcap} files, a format used to save the information about the traffic of a network, that can not be directly interfaced with a ANN, which requires as input a set of numeric values. 
+All the operations described in the following sections, if not stated otherwise, have been implemented using the Python 3 language\cite{python} and, in particular, the Numpy and Pandas libraries\cite{numpy,pandas}. 
 
 \section{Traffic stream time series creation}
 
 Since all the traffic information is contained in \texttt{pcap} files it is necessary to extract and convert this information to a numeric format in order to utilize it as input of the model.
-To do this we use the WireShark suite which allows to inspect \textit{pcap} files and offers various tools to process them. In particular the \texttt{tshark} command line tools allows to extract a time series of the traffic stream.
+To do this we use the WireShark suite\cite{wireshark}, which allows to inspect \textit{pcap} files and offers various tools to process them. In particular the \texttt{tshark} command line tools allows to extract a time series of the traffic stream.
 
 Using this tool the traffic time series are extracted in the following way: for each device listed in \tabref{tab:4sicsdevlist} and \tabref{tab:iotdevlist} we use its IP or MAC address to respectively filter the traffic data. After this for each device we export to a simple text file the total time series. To avoid notation issues in the following we will refer to the total time series of a device as ${\tilde{X}_i^j}$, where $i$ is a time index representing the value of the timeseries at a specif time and $j$ is an index representing the particular feature considered. 
 Each device is then represented by a multivariate timeseries. The features considered for this work, alongisde with the associated j-index, are reported in the following:
@@ -161,13 +161,14 @@ The analysis of traffic time series is by itself enough to train a classifier ab
 
 As previously described we are interested in performing an identification of the devices without using the "standard" identifiers provided by the devices themselves. However an important information, that we are not yet exploiting during the analysis of the time series, is the protocol used by a device to communicate with the others.
 The use of the information regarding the communication protocols used by a device may improve significantly the capability of a classifier to identify a device and should therefore be included in the representation of the device.
-The first step is then to associate each device with a list of all the protocol used to communicate, this operation is done using the Guardian Community Edition(GCE) and analysing the \texttt{pcap} files with it. The simple association of a device with all the protocols used to communicate is however not directly usable as information for a classifier since it requires the information to be in a numeric format.
+The first step is then to associate each device with a list of all the protocol used to communicate, this operation is done using the Guardian Community Edition (GCE)\cite{gce}. The GCE is a free tool, developed by Nozomi Networks\cite{nozomi}, that provides, among the many features, the possibility of analysing a traffic \texttt{pcap} file and extracting information about the OT and IoT assets contained. 
 
+The simple association of a device with all the protocols used to communicate is however not directly usable as information for a classifier since it requires the information to be in a numeric format.
 The simplest way to convert this list to a numeric input would then be: enumerate the list of all protocols used in a traffic file and associate each device with a vector containing the indices of the used protocols. However, similarly to the use of a full length time series, this approach is not optimal due to the non regular length of the generated vector, since the number of used protocols changes with each device. Considering also the big variety of protocols and the fact that in the future many other protocols will be developed and implemented the use of this approach will not lead to a good representation of the device.
 A better approach is to divide the communication protocols in classes based on the high level behaviour of a communication done via that protocol, namely we want to group protocols used for the same type of operations together. Once the classes are defined we can associate each device to a vector of binary values with the same length of the number of classes, where each binary value is either 1, if the device uses a protocol of a specific class, or 0, if the other case. This approach offers many advantages, the first one being an already optimal input for the training of a classifier, since the vectors have regular length and standardized values. More importantly, this approach allows the generalization to new protocols by just adding them to the specific class.
 
 To better illustrate this approach let's make an example. Let's for simplicity define only three classes of protocols:
-\begin{itemize}[noitemsep, nolistsep]
+\begin{itemize}[ nolistsep]
     \item \textbf{OT protocols}: \texttt{dnp3}, \texttt{modbus}
     \item \textbf{Monitoring}: \texttt{snmp}, \texttt{igmp}, \texttt{s7}
     \item \textbf{Applications}: \texttt{imap}, \texttt{pop3}, \texttt{https}
@@ -175,11 +176,8 @@ To better illustrate this approach let's make an example. Let's for simplicity d
 If we then have a device associated to the following list of protocols: \texttt{"dnp imap pop3 https"}, we will represent it with $[1,0,1]$ since it uses OT and application protocols but not monitoring ones.
 In \tabref{tab:protolist} a list of the classes of communication protocols considered in this work is reported.
 
+\bigskip
 
-\section{Dataset division and device classes}
-
-In the previous sections we described how to extrapolate useful information from a traffic file and how to process it in order to represent a specific device. Looking at the dataset device table, \tabref{tab:4sicsdataset} and \tabref{tab:iotdataset}, we can see that there are many similar devices, such as switches or sensors. 
-To further enhance the capability of identifying a device we can therefore group similar devices in classes allowing the classifier to be trained on a more varied and bigger dataset, resulting in a more robust classifier. This choice has also the great advantage of enhancing the capability of identifying devices that are not part of the training dataset, which translate it the eventual capability of identifying also devices that will be developed in the future without needing to retrain the classifier.
 \begin{table}[h]
 \centering
 \begin{tabular}{|l|l|}
@@ -197,6 +195,12 @@ Applications   & browser ,  http ,  https ,  telnet ,    dropbox-lsp ,  smtp ,  
 \caption{List of communications protocols considered for the analysis. Protocols are grouped in class depending on their high level behaviour.}
 \label{tab:protolist}
 \end{table}
+
+\section{Dataset division and device classes}
+
+In the previous sections we described how to extrapolate useful information from a traffic file and how to process it in order to represent a specific device. Looking at the dataset device table, \tabref{tab:4sicsdataset} and \tabref{tab:iotdataset}, we can see that there are many similar devices, such as switches or sensors. 
+To further enhance the capability of identifying a device we can therefore group similar devices in classes allowing the classifier to be trained on a more varied and bigger dataset, resulting in a more robust classifier. This choice has also the great advantage of enhancing the capability of identifying devices that are not part of the training dataset, which translate it the eventual capability of identifying also devices that will be developed in the future without needing to retrain the classifier.
+
 
 
 We now have all the ingredients needed to create our training dataset. One last thing that is important to mention is that the training dataset, as in most the Machine Learning applications,
@@ -234,13 +238,13 @@ The devices used to create the final datasets, grouped by device classes, alongs
 Total & & 38584 & 12861 & 12861 & 64306 \\
 \bottomrule
 \end{tabular}
-\caption{Device used for the creation of the final 4SICS dataset for the device identification, grouped by device type. The time series of this dataset have been preprocessed using the "augmented" splitting procedure, described in \secref{splitting} with a lookback value $L=100$.}
+\caption{Device used for the creation of the final 4SICS dataset for the device identification, grouped by device type. The time series of this dataset have been preprocessed using the "augmented" splitting procedure, described in \secref{splitting} with a lookback value $L=100$. The number of sample of devices indicated with $^*$ is limited on purpose, in order to maintain a balanced dataset.}
 \label{tab:4sicsdev}
 \end{table}
 
 
 
-\begin{table}[t]
+\begin{table}[h]
 \centering
 \begin{tabular}{llrrrr}
 \toprule
@@ -268,7 +272,7 @@ Total & & 12056 & 2584 & 2584 & 17224 \\
 \bottomrule
 \end{tabular}
 \caption{Device used for the creation of the final IoT Sentinel dataset for the device identification, grouped by device type.The time series of this dataset have been preprocessed using the "augmented" splitting procedure, described in \secref{splitting} with a lookback value $L=30$.}\label{tab:iotdev}
-\vspace{12cm}
+%\vspace{12cm}
 \end{table}
 
 

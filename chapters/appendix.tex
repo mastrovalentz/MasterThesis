@@ -35,5 +35,103 @@ All the main features and hyperparameters are the same as the ones for the archi
 
 
 \chapter{Appendix B}
-\lipsum[1]
 \label{app:lb_bonus_res}
+
+In this appendix additional plots for the analysis of the lookback values, discussed in \secref{res_lb} are shown. The plots show the evolution of the model accuracy and loss function during the training of the 1B\_NP architecture. The training is performed using time series for the 4SICS dataset with different lookback $L$ values during the preprocessing step. 
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Loss function]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_25_20210620-165709__type_1branch_no_pool__st_scale_sub__lb_10__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100__loss.pdf}
+            \label{fig:lb_10_loss}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Model accuracy]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_25_20210620-165709__type_1branch_no_pool__st_scale_sub__lb_10__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100___accuracy.pdf}
+            \label{fig:lb_10_acc}
+        }
+    \end{minipage}
+
+    \caption{Loss function and model accuracy during training with $L=15$.}
+    \label{fig:res_lb_val}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Loss function with lookback $L=25$]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_15_20210620-165532__type_1branch_no_pool__st_scale_sub__lb_5__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100__loss.pdf}
+            \label{fig:lb_10_loss}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Model accuracy]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_15_20210620-165532__type_1branch_no_pool__st_scale_sub__lb_5__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100___accuracy.pdf}
+            \label{fig:lb_10_acc}
+        }
+    \end{minipage}
+
+    \caption{Loss function and model accuracy during training with $L=25$.}
+    \label{fig:res_lb_val}
+\end{figure}
+
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Loss function]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_50_20210613-181651__type_1branch_no_pool__st_scale_sub__lb_50__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100__loss.pdf}
+            \label{fig:lb_10_loss}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Model accuracy]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_50_20210613-181651__type_1branch_no_pool__st_scale_sub__lb_50__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100___accuracy.pdf}
+            \label{fig:lb_10_acc}
+        }
+    \end{minipage}
+
+    \caption{Loss function and model accuracy during training with $L=35$.}
+    \label{fig:res_lb_val}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Loss function]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_100_20210613-180220__type_1branch__st_scale_sub__lb_100__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100__loss.pdf}
+            \label{fig:lb_10_loss}
+        }
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.49\textwidth}
+        \vspace{0pt}
+        \centering
+        \subfloat[Model accuracy]{
+        \includegraphics[width=\textwidth]{images/results/LB_test_100_20210613-180220__type_1branch__st_scale_sub__lb_100__act_elu__nf_16__ks_10__nn_50__l2_1e-05__bs_200__ep_100___accuracy.pdf}
+            \label{fig:lb_10_acc}
+        }
+    \end{minipage}
+
+    \caption{Loss function and model accuracy during training with $L=50$.}
+    \label{fig:res_lb_val}
+\end{figure}
