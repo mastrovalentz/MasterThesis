@@ -75,7 +75,7 @@ The ELU\cite{elu} activation functions is an improvement over the ReLU. In this 
         -1  & \text{if } x < 0 
   \end{cases}
 \end{align}
-Neurons using this function are also called linear threshold units(LTU). This type of neurons can be used for solving simple tasks but is not able to solve complex tasks like multiclass classifications or image recognitions.
+Neurons using this function are also called linear threshold units(LTU). This type of neurons can be used for solving simple tasks, but are not able of solving complex tasks like multiclass classifications .
 \end{minipage}
     \end{figure}
 
@@ -93,7 +93,7 @@ Neurons using this function are also called linear threshold units(LTU). This ty
    \begin{equation}
        a(x) =\frac{1}{1+e^{-x}}
    \end{equation}
-   The sigmoid functions provides an output value in $[0,1]$ and is differentiable in every point. This properties makes it one of the most used activation functions for the last layer of an ANN.
+   The sigmoid function provides an output value in $[0,1]$ and is differentiable in every point. This properties makes it one of the most used activation functions for the last layer of an ANN.
 \end{minipage}
     \end{figure}
 
@@ -111,6 +111,6 @@ Neurons using this function are also called linear threshold units(LTU). This ty
    \begin{equation}
        a(x) =\frac{e^x-e^{-x}}{e^x+e^{-x}}
    \end{equation}
-The hyperbolic tangent has similar properties to the sigmoid function. Its output is however in $[-1,1]$ which may speed up convergence in same applications.
+The hyperbolic tangent has similar properties to the sigmoid function. Its output is however in $[-1,1]$ which may speed up convergence in some applications.
 \end{minipage}
 \end{figure}

@@ -1,14 +1,14 @@
 \chapter{Deep Learning and Neural Networks}
 
-In the Machine Learning framework the so-called feature learning represents a class of methods whose goal is to create computing systems able to solve specific tasks, like detecting particular behaviours of structures or classifying a particular object, starting from the raw data.
+In the Machine Learning framework, the so-called feature learning represents a class of methods whose goal is to create computing systems able to solve specific tasks, like detecting particular behaviours of structures or classifying a particular object, starting from the raw data.
 
-Deep learning methods are a part of this family and have been applied in many fields, such as audio recognition and computer vision. Often this methods makes use of Artificial Neural Networks. Deep Learning is in fact usually referred to the use of Artificial Neural Networks with a multiple layer structure, from which the adjective 'deep' derives, as we will describe in the following.
+Deep learning methods\cite{deeplearningbook,deep_method} are a part of this family and have been applied in many fields, such as audio recognition\cite{deep_audio} and computer vision\cite{computer_vision1, computer_vision2}. Often this methods makes use of Artificial Neural Networks. Deep Learning is in fact usually referred to the use of Artificial Neural Networks with a multiple layer structure, from which the adjective 'deep' derives, as we will describe in the following. 
 
 \section{Artificial Neural Networks}
 
 Artificial Neural Networks (ANNs in the following) are also denoted as biological-inspired networks; this denominations derives from their structure, which is inspired from  the brain of the animals. As for a natural brain, where each neuron communicates with others through the synapses, ANN are computing systems based on a series of units, called artificial neurons, connected among themselves. 
 
-The simplest model used to represent an artificial neuron, capable of simple learning tasks, is the perceptron, invented in 1958 by Frank Rosenblatt\cite{perceptron}, whose work was inspired by the Warren McCulloch and Walter Pills\cite{nielsen}. A perceptron, given a series of binary input values $\bar{x}=\{x_1,\dots, x_n\}$, returns a single binary output value $f(\bar{x}, \alpha)$, where $\alpha$ are the internal parameters of the perceptron. 
+The simplest model used to represent an artificial neuron, capable of simple learning tasks, is the perceptron, invented in 1958 by Frank Rosenblatt\cite{perceptron}, whose work was inspired by Warren McCulloch and Walter Pills\cite{nielsen}. A perceptron, given a series of binary input values $\bar{x}=\{x_1,\dots, x_n\}$, returns a single binary output value $f(\bar{x}, \alpha)$, where $\alpha$ are the internal parameters of the perceptron. 
 
 The internal structure on the perceptron, represented in \figref{fig:perceptron}, is composed of a series of real-valued weights $\bar{w}=\{w_1,\dots,w_n\}$, a bias value $b$ and a threshold $\delta$. These parameters are used by the decision function $f$ to estimate the output value:
 
@@ -29,7 +29,7 @@ f(\bar{x},\alpha) =
 
 \section{Neural Network architectures}
 
-The perceptron model is unable to solve the complex tasks that are common nowadays in the Deep Learning field. In order to solve this tasks more complex models for the artificial neurons are used but, more importantly, the neurons are combined in order to create an Artificial Neural Network or ANN.
+The perceptron model is however unable to solve the complex tasks that are common nowadays in the Deep Learning field. In order to solve this tasks more complex models for the artificial neurons are used but, more importantly, the neurons are combined in order to create an Artificial Neural Network or ANN.
 
 In most common applications the neurons are organized in consecutive layers.
 In this structure each layer receives a series of values as input and produces an output which is used, with some manipulations, as input for the subsequent layer. The layers are usually denominated as following:
@@ -63,14 +63,14 @@ A first distinction in the structure of an ANN can be done between fully and par
     \label{fig:full_part_ANN}
 \end{figure}
 
-An important aspect to highlight is that, due to the layered structure of the ANNs, we can disengage ourself from mathematically represent each single artificial neuron of the network and treat each  layer as a single mathematical object. \\
+An important aspect to highlight is that, due to the layered structure of the ANNs, we can disengage ourselves from mathematically represent each single artificial neuron of the network and treat each  layer as a single mathematical object. \\
 Given an ANN composed of $N_L$ consecutive layers, where the $i$-th layer is denoted with $L_i$, we can represent the output of a layer as a function:
 \begin{equation}
     f_L^i (\bar{x_i})=a_i \left( \tilde{f}(\bar{x_i}, \boldsymbol{w}_i) + \bar{b}_i \right) 
     \label{eq:layer_math}
 \end{equation}
 
-where $\bar{x}_i$ is the input of the layer, $\boldsymbol{w}_i$ is a matrix of free parameters, called weights and $\bar{b}_i$ is a bias vector also composed of free parameters. The $\tilde{f}$ function is the key mathematical operation of the layer, whose choice leads to very different types of layers, which are then used to create specific types of ANNs, as described in \secref{ANN_type}. The $a_i$ function is the so-called activation function, whose choice plays a crucial role is the ability of the network to solve a specific task. Some of the possible choices for this function are reported in \secref{activations}.
+where $\bar{x}_i$ is the input of the layer, $\boldsymbol{w}_i$ is a matrix of free parameters, called weights and $\bar{b}_i$ is a bias vector, also composed of free parameters. The $\tilde{f}$ function is the key mathematical operation of the layer, whose choice leads to very different types of layers, which are then used to create specific types of ANNs, as described in \secref{ANN_type}. The $a_i$ function is the so-called activation function, whose choice plays a crucial role is the ability of the network to solve a specific task. Some of the possible choices for this function are reported in \secref{activations}.
 This representation then allows us to represent an artificial neural network, composed of $N_L$ layers, as a set $\mathcal{F}_{N_L}$:
 \begin{equation}
 \mathcal{F}_{N_L} = \left\{ f_N(\bar{x}), \boldsymbol{w}, \bar{b}\right\}
@@ -83,7 +83,7 @@ functions:
     f_N(\bar{x}) = f_L^{N_L} \circ f_L^{N_L-1}\circ\dots\circ f_L^2\circ f_L^1 (\bar{x}) 
 \end{equation}
 
-Now that the structure of an ANN has been defined the most important question is how to find the best $\boldsymbol{w}$ and $\bar{b}$ parameters for a specific task.
+Now that the structure of an ANN has been defined, the most important question is how to find the best $\boldsymbol{w}$ and $\bar{b}$ parameters for a specific task.
 Given a particular network structure and an input dataset $\mathcal{D}$, the best parameters  are estimated through a procedure called "training". In this procedure we define a loss function, which estimates how well the network is currently solving the task, and then utilize an algorithm which minimizes it by modifying the free parametes of the network. This steps are further explained respectively in \secref{lossfunction}
 and \secref{weightoptimization}.
 
@@ -97,7 +97,7 @@ As shown in \forref{eq:layer_math} an ANN layer can be mathematically represente
 
 where $a_i$ is the so-called activation function. The choice of this function plays a crucial role in determining both the capability of the network of solving the assigned task and also  the time needed for it to be able to solve it efficiently, namely different activation function may need a longer training than others. The choice of this function depends on various factors but the most important surely are the position of the layer inside the network and the specific task we are trying to solve.
 
-The position inside the network is relevant since the hidden layers of the network are usually built using activation functions with output values in $\mathbb{R}$ or $\mathbb{R}^+$ while for the output layers activation functions with values in $[0,1]$ or $[-1,1]$ are preferred in order to interpret the results as a probability.
+The position inside the network is relevant since the hidden layers of the network are usually built using activation functions with output values in $\mathbb{R}$ or $\mathbb{R}^+$ while, for the output layers, activation functions with values in $[0,1]$ or $[-1,1]$ are preferred, in order to interpret the results as a probability.
 The specific task, on the other hand, mainly influences the activation function of the output layer since different tasks often requires a different output structure.
 In the following a list of the most commonly used functions is presented.
 
@@ -117,10 +117,10 @@ It is important to highlight that, despite being described separately, this two 
 
 \subsection{Dense Neural Networks}\label{dnn}
 
-Dense neural networks, also known as DNNs, are Artificial Neural Networks with many fully connected hidden layers between the input and output ones, this result in a high number of connections between the units from which the 'dense' adjective derives.
+Dense neural networks, also known as DNNs, are Artificial Neural Networks with many fully connected hidden layers between the input and output ones. This result in a high number of connections between the units, from which the 'dense' adjective derives.
 
 Following directly from this denominations the fully connected layers that compose a Dense Neural Network are called Dense Layers.
-A dense layer, whose decision function will denoted with $f_D$, is characterized by the dot product $\cdot$ as its key mathematical operation, using the notation previously introduced it can then be represented as:
+A dense layer, whose decision function will be denoted with $f_D$, is characterized by the dot product $\cdot$ as its key mathematical operation, using the notation previously introduced it can then be represented as:
 \begin{equation}
     f_D (\bar{x})=a_i \left( \bar{x} \cdot \boldsymbol{w} + \bar{b}_i \right) 
     \label{eq:layer_dense}
@@ -145,12 +145,12 @@ In \figref{fig:dnn_example} an illustration of the structure of a simple DNN is 
 \end{figure}
 
 One of the main drawbacks of the usage of DNNs is however the number of free parameters. Dense layers are in fact characterized by an high number of weights and, due to the fully connected structure of the network, the total number of parameters grows really fast with each additional layer. 
-A too high number of parameters may lead to two main issues. The first problem one may encounter is the inability of the network to correctly estimate the optimal parameters, resulting in its inability of giving correct prediction. The second possible issue is the so-called over-fitting problem, namely the network adapts too well to the data on which its train is performed, but again gives completely wrong prediction when tested on other data. A brief explanation of this issue is discussed in \secref{fit_over_under}.
-To avoid this issues the number of free parameters can be controlled, working on two factors: the shape of the input vector, which depends on the specific tasks but can sometimes be modified or reduced using techniques such as the PCA, and the number of neurons in each layer, which can be selected in order to reach the best compromise between performances and model complexity.
+A too high number of parameters may lead to two main issues. The first problem one may encounter is the impossibility, during the training procedure, of correctly estimating the optimal network parameters. The second possible issue is the so-called over-fitting problem, namely the network adapts too well to the data on which its train is performed, but gives wrong predictions when tested on other datasets. A brief explanation of this issue is discussed in \secref{fit_over_under}.
+To avoid this issues the number of free parameters can be controlled, working on two factors:  shape of the input vector, which depends on the specific tasks but can sometimes be modified or reduced using techniques such as the PCA\cite{pca}, and  number of neurons in each layer, which can be selected in order to reach the best compromise between performances and model complexity.
 
 \subsection{Convolutional Neural Networks}\label{cnn}
 
-Another type on ANN is the so-called Convolutional Neural Network, also known as CNN. As the name suggests the key mathematical operation in the layers of this type of network is the convolution, this layers are therefore called Convolutional Layers, from which the CNN name derives.
+Another type on ANN is the so-called Convolutional Neural Network, also known as CNN. As the name suggests the key mathematical operation in the layers of this type of network is the convolution. For this reason, this layers are called Convolutional Layers, from which the CNN name derives.
 
 The key elements of a convolutional layers are the so-called filters. The output of a convolutional layer is fact computed as the resulting vector of the discrete convolution of the input values with each filter. 
 
@@ -163,10 +163,10 @@ The key elements of a convolutional layers are the so-called filters. The output
 \end{wrapfigure}
 The filters of a CNN have the same role of the weight tensor of a DNN and are in fact the free parameters of the network, whose optimization is performed during the training. In \figref{fig:cnn_filter} an example of the result of the application of a filter to a 2-dimensional input is shown.
 
-In most of the common implementations however CNNs are not composed of only convolutional layers but are made of an alternation of convolutional and pooling layers, where the latter is used to  perform a non-linear down-sampling on the output of a convolutional layer. An example of the combination of these two layers is shown in \figref{fig:cnn_tot}.
-More specifically a pooling layer divides its input in a series of region called "pools" and applies a function to each one.
+In most of the common implementations however CNNs are not composed of only convolutional layers. They are in fact are made as an alternation of convolutional and pooling layers, where the latter is used to  perform a non-linear down-sampling on the output of a convolutional layer. 
+More specifically a pooling layer divides its input in a series of regions called "pools" and applies a function to each one.
 The resulting value from all pools is then combined and used as the output of the layer.
-
+An example of the combination of these two layers is shown in \figref{fig:cnn_tot}.
 
 Many choices for both the size of the pools and the function to apply are possible however one of the most common implementation is a max-pooling layer with a 2x2 pool size, namely a layer that divides the input in 2x2 regions and takes the highest value from each of them. A example of the application of this type of layer is shown in \figref{fig:cnn_pool} 
 
@@ -199,7 +199,7 @@ After the choice of the ANN type and its internal structure the next step is to 
 
 In most Deep Learning application the role of the learning algorithm is in fact to estimate the best set of parameters that are able to minimize the value of the loss function over a set of given input values. The choice of this function is therefore really important since it may greatly influence the final ability of the model of producing correct predictions.
 
-As for the activation functions many choices of the loss function are possible. In the following part we present a brief list of the ones implemented in the most common applications:
+As for the activation function many choices for the loss function are possible. In the following we present a brief list of the ones implemented in the most common applications:
 \begin{itemize}
     \item \textbf{Mean Squared Error} or \textbf{L2 Loss}:\\
     This loss computes the average of the squared distance between the correct label associated to a sample, $y_{i,T}$ and the predicted one, $y_{i,P}$:
@@ -245,12 +245,12 @@ As for the activation functions many choices of the loss function are possible. 
 \subsection{Overfitting and underfitting recognition} \label{fit_over_under}
 
 Aside from being the quantity used to estimate the optimal parameters of a predictor the loss function is also used to monitor the performance in search of over and under fitting behaviour during the learning procedure. 
-This issues can be observed dividing the given dataset $\mathcal{D}$ in two parts: a training dataset $\mathcal{D}_{TR}$ and a test dataset $\mathcal{D}_{TE}$\footnote{In many applications the dataset is not split in two but rather three subsets, namely the training $\mathcal{D_{Tr}}$, validation $\mathcal{D_{V}}$ and test $\mathcal{D_{Te}}$ set. In this case the validation set is used to monitor the eventual presence of over and under fitting while the test set is used to evaluate the final performance of the model. As we will see in the following chapters this strategy of division is also the one implemented in this work.}. As the name suggests the training dataset is used to train the predictor while the test set is used to verify the effective performance after the learning.
+This issues can be observed dividing the given dataset $\mathcal{D}$ in two parts: a training dataset $\mathcal{D}_{TR}$ and a test dataset $\mathcal{D}_{TE}$\footnote{In many applications the dataset is not split in two but rather three subsets, namely the training $\mathcal{D_{Tr}}$, validation $\mathcal{D_{V}}$ and test $\mathcal{D}_{TE}$ set. In this case the validation set is used to monitor the eventual presence of over and under fitting while the test set is used to evaluate the final performance of the model. As we will see in the following chapters this strategy of division is also the one implemented in this work.}. As the name suggests the training dataset is used to train the predictor while the test set is used to verify the effective performance after the learning.
 
 The overfitting\cite{overfitting} issue is observable in cases where the prediction model adapts too well to the training set, failing to give good predictions on the test set. This issue is common in cases where the complexity of the model is too high compared to the size or structure of the given dataset or when the training is performed for too long. Possible ways to resolve the overfitting issue are using a simplified model or using some optimization techniques, such as the regularization and dropout, described in \secref{opt_tec}.
 The opposite of the overfitting is the so-called under fitting. This issue arises whenever there is still room for improving the model prediction capability. Possible ways to resolve this issue is the introduction of a more complex model or just increasing the training time.
 
-In order to visualize this two issues, lets for example consider the simple task of performing a polynomial fit over a given distribution, as shown in  \figref{fig:overunderfit}. The data samples in this figure have been generated from a second degree polynomial distribution plus some gaussian noise and divided in training, over which the fit is performed, and test samples. The distribution is then fitted with a first, second and 10-th degree polynomial and the MSE Loss, introduced before, is computed. As we can see the second order polynomial fit has similar training and the fit well represents both the distribution. On the other hand the first order fit instead has a very high training and test error which is a clear sign of the underfitting issue. Finally the 10-th order polynomial fit presents a very low training error and an high test error which indicates that the estimated distriubution is overfitted on the training set but does not represent effectively the full distribution.
+In order to visualize this two issues, lets for example consider the simple task of performing a polynomial fit over a given distribution, as shown in  \figref{fig:overunderfit}. The data samples in this figure have been generated from a second degree polynomial distribution plus some gaussian noise and divided in training, over which the fit is performed, and test samples. The distribution is then fitted with a first, second and 10-th degree polynomial and the MSE Loss, introduced before, is computed. As we can see the second order polynomial fit has similar training and test MSE values and the fit well represents both the distributions. On the other hand the first order fit has a very high training and test error, which is a clear sign of the underfitting issue. Finally, the 10-th order polynomial fit presents a very low training error and an high test error,which indicates that the estimated distribution is overfitted over the training set, but does not represent effectively the full distribution.
 
 \begin{figure}[h]
     \centering
@@ -318,9 +318,9 @@ In order to visualize this two issues, lets for example consider the simple task
 
 \section{Network parameters optimization}\label{weightoptimization}
 
-We have now illustrated the main choices for the creation of an ANN and for the loss function. We know focus on how ann ANN can be trained in order to give relevant prediction respect to the task we are able to solve. 
-As we saw in the previous section an ANN is composed by a set of free parameters, namely the weights and biases. The goal of our algorithm is then to find the best parameters able to minimize the value of the selected loss function. This is done using the so-called Backpropagation algorithm\cite{backprop}, described in \secref{backprop}. This algorithm provides a solid method to compute the gradient of the loss function with respect to the free parameter. The gradient of the loss function is then utilized to update the values of the weights and biases themselves through an optimization algorithm, such as the ones described in \secref{optalg}.
-These algorithms are iterated over the full network until a condition, which usually is a maximum number of iterations or a minimum loss value, is met. Each complete iteration of the full gradient estimation and parameter updating is called epoch.
+We have illustrated the main choices for the creation of an ANN and for the loss function. We now focus on how an ANN can be trained in order to give relevant prediction for to the task we are interested in solving. 
+As we saw in the previous section, an ANN is composed by a set of free parameters, namely the weights and biases. The goal of our algorithm is then to find the best parameters, able to minimize the value of the selected loss function. This is done using the so-called Backpropagation algorithm\cite{backprop}, described in \secref{backprop}. This algorithm provides a solid method to compute the gradient of the loss function, with respect to the free parameters. The gradient of the loss function is then utilized to update the values of the weights and biases themselves through an optimization algorithm, such as the ones described in \secref{optalg}.
+These algorithms are iterated over the full network until a condition, which usually is a maximum number of iterations or a minimum loss value, is met. Each complete iteration of the full gradient estimation and parameter updating is called epoch. This procedure is what we previously referred to as the "training" procedure of an ANN.
 
 \subsection{Backpropagation algorithm}\label{backprop}
 
@@ -383,15 +383,17 @@ The pseudoce of the two procedures is respectively reported  in \algoref{alg:fow
 \subsection{Optimizers}\label{optalg}
 
 Once the gradient, with respect to each parameter, is computed we can update the parameters themselves. This is done using the so-called optimizers, namely algorithms whose goal is to find the optimal parameters to minimize a function.
+
 For sake of simplicity, in the following we will indicate with $\theta_t$ the value a generic free parameter of the network at the t-th iteration and with $g_{i,t}$ its gradient computed using the i-th sample of the dataset at the t-th iteration.
 
-As for the activation and loss function also the optimizers present multiple choices, in the following chapters we describe some of optmizers belonging to the Gradient Descent family, in \secref{opt_dg} and an a so-called adaptive optmizer, in \secref{adam}.
+As for the activation and loss function also the optimizers present multiple choices, in the following chapters we describe some of optmizers belonging to the Gradient Descent family, in \secref{opt_dg} and a so-called adaptive optmizer, in \secref{adam}.
 
 \subsection{Gradient Descent optmizers}
 \label{opt_dg}
-One of the most common implemented optimizers, in the Machine Learning framework, ais the Gradient Descent optimizer alogside with its variants\cite{var_grad}. Among these one of the most effective is the so-called Mini-batch Gradient Descent (MGD), whose pseudo-code is presented in \algoref{alg:mgd}. This optimizer combines the ideas from two other optimizers: the Gradient Descent(GD) and Stochastic Gradient Descent (SGD), where both can be derived as an extreme applications of it.
+One of the most common implemented optimizers, in the Machine Learning framework, is the Gradient Descent optimizer, alogside with its variants\cite{var_grad}. Among these one of the most effective is the so-called Mini-batch Gradient Descent (MGD), whose pseudo-code is presented in \algoref{alg:mgd}. \\
+This optimizer combines the ideas from two other optimizers: the Gradient Descent(GD) and Stochastic Gradient Descent (SGD), which can be both derived as an extreme applications of it.
 
-The MGD performs the update of a parameter after computing the gradient over a batch sample, namely a subset of the provided training set, of dimension $n_b$. The choice of the size of this batches greatly influences both speed and stability of the algorithm: bigger batch sizes will in fact result in a more stable convergence at the price of longer computations. Once the gradient is computed the parameters are updated using the following rule:
+The MGD performs the update of a parameter after computing the gradient over a batch sample, namely a subset of the provided training set, of dimension $n_b$. The choice of the size of this batches greatly influences both speed and stability of the algorithm: bigger batch sizes will in fact result in a more stable convergence, at the price of longer computations. Once the gradient is computed the parameters are updated using the following rule:
 \begin{equation}
 \theta_{t+1}=\theta_t-\eta \cdot \sum_{i=1}^{n_b} g_{i,t}
 \end{equation}
@@ -505,16 +507,16 @@ When the an ANN architecture reaches an high number of parameters and/or  presen
 
 \subsection{Regularization}\label{regularization}
 
-Regularization is one of the central topics is the Machine Learning framework. Its goal is to reduce the generalized error, namely the error on a test set, while not modifying the error on the training set. The regularization topic is directly connected to the overfitting issue, described in the previous section and is in fact one of the most robust ways to prevent it. 
+Regularization is one of the central topics is the Machine Learning framework\cite{reg_gen}. Its goal is to reduce the generalized error, namely the error on a test set, while not modifying the error on the training set. The regularization topic is directly connected to the overfitting issue, described in the previous section and is in fact one of the most robust ways to prevent it. 
 
-The regularization is implemented defining a new regularized loss function, obtained by adding an additional term to the original loss function. Indicating with $L(\boldsymbol{w},\bar{b})$ the loss function and its depence on the weight and biases of the network, we define the regularized loss function $J(\mathbf{w}, \vec{b})$ as:
+The regularization is implemented defining a new regularized loss function, obtained by adding an additional term to the original one. Indicating with $L(\boldsymbol{w},\bar{b})$ the loss function and its depence on the weight and biases of the network, we define the regularized loss function $J(\mathbf{w}, \vec{b})$ as:
 \begin{equation}
 J(\mathbf{w}, \vec{b})=L(\mathbf{w}, \vec{b})+ \lambda\Omega(\mathbf{w})
 \end{equation}
 
 where $\lambda$ is a parameter that regulates the importance of the regularization respect to the loss and the $\Omega(\mathbf{w})$ is a function depending on the weights of the network. 
 
-The choices for the $\Omega(\mathbf{w})$ function are mainly restricted to two alternatives:
+In most application the choice for the $\Omega(\mathbf{w})$ function is mainly restricted between to two alternatives:
 \begin{itemize}
     \item \textbf{L1 regularization}: $\Omega_{L1}(\mathbf{w}) = \sum_{i=1}^N |w_i|$
     \item \textbf{L2 regularization}: $\Omega_{L2}(\mathbf{w}) = \sum_{i=1}^N w_i^2$

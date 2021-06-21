@@ -1,15 +1,15 @@
 \chapter{Dataset preprocessing and features extraction}\label{chap4}
 
-In the previous chapter we introduced the concepts of Artificial Neural Networks in the Machine learning framework for the classification task. In this chapter we will discuss how, starting from the "raw" dataset we can extract, clean and preprocess the main features which will compose the final dataset for the training of our classifier model.
-The datasets introduced in \chapref{chap3} can not be in fact directly used for the training. These datasets are in fact save as \texttt{pcap} files, a format used to save the information about the traffic of a network, that can not be directly interfaced with a ANN, which requires as input a set of numeric values. 
+In the previous chapter we introduced the concepts of Artificial Neural Networks in the Machine learning framework for the classification task. In this chapter we will discuss how, starting from the "raw" dataset we can extract, clean and preprocess the main features that will compose the final dataset for the training of our classifier model.
+The reason for this is that the datasets introduced in \chapref{chap3} can not be  directly used for the training. These datasets are in fact saved as \texttt{pcap} files, a format used to save the information about the traffic of a network, that can not be directly interfaced with a ANN, which requires as input a set of numeric values. 
 All the operations described in the following sections, if not stated otherwise, have been implemented using the Python 3 language\cite{python} and, in particular, the Numpy and Pandas libraries\cite{numpy,pandas}. 
 
 \section{Traffic stream time series creation}
 
-Since all the traffic information is contained in \texttt{pcap} files it is necessary to extract and convert this information to a numeric format in order to utilize it as input of the model.
-To do this we use the WireShark suite\cite{wireshark}, which allows to inspect \textit{pcap} files and offers various tools to process them. In particular the \texttt{tshark} command line tools allows to extract a time series of the traffic stream.
+Since all the traffic stream data is contained in the \texttt{pcap} files it is necessary to extract and convert this information to a numeric format in order to utilize it as input of the model.
+To do this we use the WireShark suite\cite{wireshark}, which allows to inspect \texttt{pcap} files and offers various tools to process them. In particular the \texttt{tshark} command line tools allows to extract a time series of the input and output traffic stream.
 
-Using this tool the traffic time series are extracted in the following way: for each device listed in \tabref{tab:4sicsdevlist} and \tabref{tab:iotdevlist} we use its IP or MAC address to respectively filter the traffic data. After this for each device we export to a simple text file the total time series. To avoid notation issues in the following we will refer to the total time series of a device as ${\tilde{X}_i^j}$, where $i$ is a time index representing the value of the timeseries at a specif time and $j$ is an index representing the particular feature considered. 
+Using this tool the traffic time series are extracted in the following way: for each device listed in \tabref{tab:4sicsdevlist} and \tabref{tab:iotdevlist} we use its IP or MAC address to respectively filter the traffic data. After this for each device we export to a simple text file the total time series. To avoid notation issues, in the following we will refer to the total time series of a device as ${\tilde{X}_i^j}$, where $i$ is a time index representing the value of the timeseries at a specif time and $j$ is an index representing the particular feature considered. 
 Each device is then represented by a multivariate timeseries. The features considered for this work, alongisde with the associated j-index, are reported in the following:
 \begin{itemize}[noitemsep]
     \item ${\tilde{X}_i^1}$: Number of packages transferred \textbf{from} the specific device to the whole network
@@ -19,7 +19,7 @@ Each device is then represented by a multivariate timeseries. The features consi
 \end{itemize}
 
 The choice of requesting a separate time series of the traffic from/to a specific device is particularly important since it allows the classifier to distinguish the behaviour of devices with mostly output traffic (e.g. sensors) from devices with mostly input traffic (e.g. control devices).
-In \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} an example of the time series extracted from some devices of the 4SICS and IoT dataset are respectively shown. It is important to notice that the IoT device time series is very short if compared to the 4SICS one; this fact is not purely coincidential, in fact all the time series from the IoT dataset present a small number of elements due to the small amount of captured traffic in the relative \texttt{pcap} file.
+In \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} an example of the time series extracted from some devices of the 4SICS and IoT dataset are respectively shown. It is important to notice that the IoT device time series is very short if compared to the 4SICS one; this fact is not purely coincidential, in fact all the time series contained in the IoT dataset present a small number of elements, due to the small amount of captured traffic in the relative \texttt{pcap} file.
 
 
 \begin{figure}[!h]
@@ -42,7 +42,7 @@ In \figref{fig:ts_example_4sics} and \figref{fig:ts_example_iot} an example of t
 
 \section{Time series preprocessing}
 
-Despite being now saved in a simple format the extracted time series are still not utilizable as input of a classifier. There are many reasons for this, the main ones being the irregularity of the time series length and not being normalized. To solve this issue we have to preprocess the time series before utilizing them for the classification. 
+Despite being now saved in a simple format the extracted time series are still not utilizable as input of a classifier. There are many reasons for this, the main ones being the irregularity of the time series length and not being normalized. To solve this issue we have to preprocess the time series, before utilizing them for the classification. 
 The prepocessing procedure, visually represented in \figref{fig:ts_processing}, is composed of the following steps:
 \begin{itemize}[noitemsep]
     \item {Length standardization} and data augmentation
@@ -69,15 +69,15 @@ A visual representation of the spliiting of time series with this method is show
     \label{fig:ts_split_std}
 \end{figure}
 
-In order to achieve good performances the training set of a classifier requires a big number of training samples, usually at least the same as the number of its free parameters. As we will shown in \chapref{chap6} a value of the lookback lower $L=30$ produces time series too short for an effective training of the model. 
-The combination of this approach with the necessity of using a value of $L$ at least equal to 30 results in the impossibility of creating enough samples for IoT dataset. The only way to solve this issue is to implement a data augmentation methodology during the division of the ${\tilde{X}_i^j}$ time series, namely we want to implement some technique that allows us to increase the number of time series extracted from ${\tilde{X}_i^j}$. Many possible techniques can be implemented, such as generating time series with a Monte Carlo algorithm from the $\bar{x}_i^j$ samples, but a simpler, yet very effective, technique was implemented for this work. \\
-The standard splitting method divides the original time series is $\frac{N}{L}$ time series where each one has completely different temporal values than the others. It is instead possible to split the original time series in such a way that each series shares $L-1$ temporal values with the previous and subsequent one, differing by just one value. Using this approach the time series group $\bar{x}_i^j$
+In order to achieve good performances the training set of a classifier requires a big number of training samples, usually at least the same as the number of its free parameters. As we will shown in \chapref{chap6} a value of the lookback lower than $L=30$ produces time series too short for an effective training of the model. 
+The combination of this approach with the necessity of using a value of $L$ at least equal to 30 results in the impossibility of creating enough samples for IoT dataset. The only way to solve this issue is to implement a data augmentation methodology during the division of the ${\tilde{X}_i^j}$ time series, namely we want to implement some technique that allows us to increase the number of time series extracted from ${\tilde{X}_i^j}$. Many possible techniques\cite{data_aug} can be implemented, such as generating time series with a Monte Carlo algorithm from the $\bar{x}_i^j$ samples, but a simpler, yet very effective, technique was implemented for this work. \\
+The standard splitting method divides the original time series in $\frac{N}{L}$ time series where each one has completely different temporal values than the others. It is instead possible to split the original time series in such a way that each series shares $L-1$ temporal values with the previous and subsequent one, differing by just one value. Using this approach the time series group $\bar{x}_i^j$
 is now defined as:
 \begin{equation}
     \bar{x}_i^j = \left\{\tilde{X}_{i}^j, \tilde{X}_{i +1 }^j, \dots, \tilde{X}_{i+L-1)}^j  \right\}
 \end{equation}
 A visual representation of this method for the time series splitting is shown if \figref{fig:ts_split_aug}.
-This second approach leads to the creation of $N-L+1$ time series solving the issue of having too few samples for the IoT dataset. Calling with $n_S$ and $n_A$ the number of time series respectively generated with the "standard" and "data augmentation" approach, if we compute the ratio between the two, we obtain:
+This second approach leads to the creation of $N-L+1$ time series, solving the issue of having too few samples for the IoT dataset. Calling with $n_S$ and $n_A$ the number of time series respectively generated with the "standard" and "data augmentation" approach, if we compute the ratio between the two, we obtain:
 \begin{equation}
     \frac{n_A}{n_S} = \frac{N-L+1}{\frac{N}{L}} = \frac{N-L+1}{N}\cdot L \quad \xrightarrow{N>>L}
     \quad \frac{n_A}{n_S}= L 
@@ -91,7 +91,7 @@ This second approach leads to the creation of $N-L+1$ time series solving the is
     \vspace{-10mm}
 \end{figure}
 \newpage
-Considering that, as said before L must be at least bigger than 25, we can see that for big enough N we get a consistent increase of the number of time series obtained for each device. 
+Considering that, as said before L must be at least bigger than 30, we can see that for big enough N we get a very consistent increase of the number of time series obtained for each device. 
 
 %\begin{figure}
 %    \centering
@@ -132,7 +132,7 @@ With this transformation we leave untouched the information regarding the number
 
 \subsection{Feature normalization}
 
-The last step of the time series preprocessing is the feature normalization. In this step we rescale the time series in order for them to have null mean and unitary variance. This step is particularly important in order to standardize the time series themselves. The main reason for the importance of this step derives from its ability of removing an eventual bias that may be introduced by external factors such as the bandwidth or the connection speed of the particular network we are considering. \\
+The last step of the time series preprocessing is the feature normalization. In this step we rescale the time series in order for them to have null mean and unitary variance. This step is particularly important in order to standardize the time series themselves. The main reason for the importance of this step derives from its ability of removing an eventual bias that may be introduced by external factors, such as the bandwidth or the connection speed of the particular network we are considering. \\
 From a mathematical point of view, the normalization translates in the definition of a new group of time series $\bar{z}^{j}_i$, computed starting from the previously defined $\bar{x}^{\prime j}_i$. Indicating with $\bar{x}^{\prime j}_{i,k}$ the k-th value of the $\bar{x}^{\prime j}_i$ time series it is possible to compute the mean value $\mu_i^j$ and standard deviation $\sigma_i^j$ of each time series as:
 \begin{equation}
 \mu_i^j = \frac{1}{L}\sum_{k=0}^{L-1} \bar{x}^{\prime j}_i\qquad
@@ -163,9 +163,9 @@ As previously described we are interested in performing an identification of the
 The use of the information regarding the communication protocols used by a device may improve significantly the capability of a classifier to identify a device and should therefore be included in the representation of the device.
 The first step is then to associate each device with a list of all the protocol used to communicate, this operation is done using the Guardian Community Edition (GCE)\cite{gce}. The GCE is a free tool, developed by Nozomi Networks\cite{nozomi}, that provides, among the many features, the possibility of analysing a traffic \texttt{pcap} file and extracting information about the OT and IoT assets contained. 
 
-The simple association of a device with all the protocols used to communicate is however not directly usable as information for a classifier since it requires the information to be in a numeric format.
-The simplest way to convert this list to a numeric input would then be: enumerate the list of all protocols used in a traffic file and associate each device with a vector containing the indices of the used protocols. However, similarly to the use of a full length time series, this approach is not optimal due to the non regular length of the generated vector, since the number of used protocols changes with each device. Considering also the big variety of protocols and the fact that in the future many other protocols will be developed and implemented the use of this approach will not lead to a good representation of the device.
-A better approach is to divide the communication protocols in classes based on the high level behaviour of a communication done via that protocol, namely we want to group protocols used for the same type of operations together. Once the classes are defined we can associate each device to a vector of binary values with the same length of the number of classes, where each binary value is either 1, if the device uses a protocol of a specific class, or 0, if the other case. This approach offers many advantages, the first one being an already optimal input for the training of a classifier, since the vectors have regular length and standardized values. More importantly, this approach allows the generalization to new protocols by just adding them to the specific class.
+The simple association of a device with all the protocols used to communicate is however not directly usable as information for a classifier, since it requires the information to be in a numeric format.
+The simplest way to convert this list to a numeric input would then be to enumerate the list of all protocols used in a traffic file and associate each device with a vector containing the indices of the used protocols. However, similarly to the use of a full length time series, this approach is not optimal due to the non regular length of the generated vector, since the number of used protocols changes with each device. Considering also the big variety of protocols and the fact that in the future many other protocols will be developed and implemented the use of this approach will not lead to a good representation of the device.
+A better approach is to divide the communication protocols in classes based on the high level behaviour of a communication done via that protocol, namely we want to group protocols used for the same type of operations together. Once the classes are defined we can associate each device to a vector of binary values with the same length of the number of classes, where each binary value is either 1, if the device uses a protocol of that specific class, or 0, if the other case. This approach offers many advantages, the first one being an already optimal input for the training of a classifier, since the vectors have regular length and standardized values. More importantly, this approach allows the generalization to new protocols by just adding them to the specific class.
 
 To better illustrate this approach let's make an example. Let's for simplicity define only three classes of protocols:
 \begin{itemize}[ nolistsep]
@@ -198,7 +198,7 @@ Applications   & browser ,  http ,  https ,  telnet ,    dropbox-lsp ,  smtp ,  
 
 \section{Dataset division and device classes}
 
-In the previous sections we described how to extrapolate useful information from a traffic file and how to process it in order to represent a specific device. Looking at the dataset device table, \tabref{tab:4sicsdataset} and \tabref{tab:iotdataset}, we can see that there are many similar devices, such as switches or sensors. 
+In the previous sections we described how to extrapolate useful information from a traffic file and how to process it in order to represent a specific device. Looking at the dataset device table, \tabref{tab:4sicsdevlist} and \tabref{tab:iotdevlist}, we can see that there are many similar devices, such as switches or sensors. 
 To further enhance the capability of identifying a device we can therefore group similar devices in classes allowing the classifier to be trained on a more varied and bigger dataset, resulting in a more robust classifier. This choice has also the great advantage of enhancing the capability of identifying devices that are not part of the training dataset, which translate it the eventual capability of identifying also devices that will be developed in the future without needing to retrain the classifier.
 
 
@@ -208,9 +208,9 @@ does not correspond to the full dataset. The full dataset, composed of the $\bar
 \begin{itemize}[noitemsep, nolistsep]
     \item \textbf{Training set}: the set used in the training procedure to train the classifier, the best parameters of the model are estimated to minimize the loss over this set
     \item \textbf{Validation set}: used during the training to monitor the model accuracy and of  loss function in order to identify the eventual presence of an overfitting behaviour 
-    \item \textbf{Test set}: used after the training to evaluate the real model accuracy of the model
+    \item \textbf{Test set}: used after the training to evaluate the real accuracy of the model
 \end{itemize}
-For each device the subsets are randomly created using the 60\% of the total number of samples for the training set and the 20\% for both the validation and test set.
+For each device the subsets are randomly selected from the full dataset with the constraint of using the 60\% of the total number of samples for the training set and the 20\% for both the validation and test set.
 The devices used to create the final datasets, grouped by device classes, alongside with the number of sample assigned to each subset, are reported in \tabref{tab:4sicsdev} and \tabref{tab:iotdev}.
 
 

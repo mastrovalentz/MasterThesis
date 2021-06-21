@@ -5,20 +5,21 @@ and, when possible, its brand and model, is a task of increasing importance. Wit
 
 To tackle the identification task we propose a machine learning based approach in which, thanks to the implementation of an Artificial Neural Network, the identification is performed without identifiers and can be easily automated to large scale networks. 
 
-In this chapter we will first introduce the classification task, under which the identification falls in the machine learning framework, in \secref{classification}. In \secref{identification} we will then discuss the importance of the identification. Finally in \secref{secdata} we will present the datasets chosen for this study.
+In this chapter we will first introduce the classification task, under which the identification falls in the machine learning framework, in \secref{classification}. In \secref{identification} we will then discuss the reasons for importance of the identification, alongside with some of the approaches that have already been proposed for this task. Finally in \secref{secdata} we will present the datasets chosen for this study.
 
 \newpage
 \section{The classification task}\label{classification}
 
 In the machine learning framework we indicate with classification the task of associating a particular label to a given object. 
-Indicating with $x_i$ the i-th entry of the input dataset $\mathcal{D}$, our goal is to associate it to a label $y_i\in\mathcal{Y}$, where $\mathcal{Y}$ is the set of all possible labels. In our case this association is performed using an ANN that, as described previously, can be represented by a set $\mathcal{F}_{N_L} = \left\{ f_N(\bar{x}), \boldsymbol{w}, \bar{b}\right\}$, in this way we are substantially using the $\mathcal{F}_{N_L}$ set a a map
-$\mathcal{F}_{N_L}: \mathcal{D} \to  \mathcal{Y}$ such that $\mathcal{F}_{N_L}(x_i)=y_i$:
+Indicating with $x_i$ the i-th entry of the input dataset $\mathcal{D}$, our goal is to associate it to a label $y_i\in\mathcal{Y}$, where $\mathcal{Y}$ is the set of all possible labels. In our case this association is performed using an ANN that, as described previously, can be represented by a set $\mathcal{F}_{N_L} = \left\{ f_N(\bar{x}), \boldsymbol{w}, \bar{b}\right\}$, in this way we are substantially using the $\mathcal{F}_{N_L}$ set as a map
+$\mathcal{F}_{N_L}: \mathcal{D} \to  \mathcal{Y}$, such that $\mathcal{F}_{N_L}(x_i)=y_i$.
 %\begin{equation}
 %    \begin{aligned}
 %        \mathcal{F}_{N_L}: & \mathcal{D} &\to & \mathcal{Y} \\
 %        & x_i &\to & y_i \\
 %    \end{aligned}
 %\end{equation}
+
 Depending on the label set $\mathcal{Y}$ we can divide the classification tasks in different subgroups, the main ones being:
 \begin{itemize}[]
     \item \textbf{Binary classification}: this group is composed of tasks with only to possible outcomes, from which the "binary" adjective comes, example of this tasks are:
@@ -31,14 +32,13 @@ Depending on the label set $\mathcal{Y}$ we can divide the classification tasks 
         \item Writing recognition: recognize and classify written digits and/or letters
     \end{itemize}
     \item \textbf{Multi-label classification}: tasks belonging to this group are characterized by the presence of multiple label
-    sets. In this case the labels are represented by an array of values $\bar{y}_i$ instead of being singular values. An example of this type task is:
+    sets. In this case the labels are represented by an array of values $\bar{y}_i$ instead of being singular value. An example of this type task is:
     \begin{itemize}
         \item Photo classification: recognize multiple elements in a photo, e.g. given the photo of an house recognize windows, doors, etc...
     \end{itemize}
 \end{itemize}
 
 Our case study, as previously said, has the goal of identifying the device type among many possible choice and therefore belongs to the multi-class classification group.
-In the previous section we 
 
 A particular case of classification to mention is the so-called imbalanced classification. This name refers to cases were the number of samples belonging to each class is heavily asymmetric, for binary classification, or variated, for multiclass classification. A typical example of this type of classification are the anomaly detection and medical diagnosis tasks. In order to deal with this type of task specific techniques often needs to be implemented\cite{imbclasf}. As we will see in \tabref{tab:4sicsdev}, in order to maintain a balanced dataset, it is, sometimes, possible to "cut" the number of samples considered for a class.
 
@@ -47,21 +47,21 @@ A particular case of classification to mention is the so-called imbalanced class
 
 \section{Network devices and identification}\label{identification}
 
-One of the reasons of the device identification importance lies in the cybersecurity field: the ability of identifying a device is crucial in order to manage the assets of a networks and identifying potential external or malicious connected devices. This is becoming more and more important as the number of device grows since, when commercialized, many products may suffer from security flaws\cite{attk1, attk2}, with  reports of thousands of devices being vulnerable by just a single software flaw\cite{flaw}.
+One of the reasons of the device identification importance lies in the cybersecurity field: the ability of identifying a device is in fact crucial in order to manage the assets of a networks and identifying potential external or malicious connected devices. This is becoming more and more important as the number of device grows since, when commercialized, many products may suffer from security flaws\cite{attk1, attk2}, as an example there have been reports of thousands of devices being vulnerable by just a single software flaw\cite{flaw}.
 
-In the past, when working on small scale networks of few connected devices, it was possible to manually keep a database of the devices classified using a "standard" identifier, such as their IP or MAC address. This is however impossible nowadays, not only due to the scale of the network, which can be of thousands of devices, but also due to the the fact that devices may have multiple interfaces, such as Wi-Fi and LTE for a smartphone, resulting in a dynamic change of the aforementioned identifiers.
+In the past, when working on small scale networks of few connected devices, it was possible to manually keep a database of the devices, classified using a "standard" identifier, such as their IP or MAC address. This is however impossible nowadays, not only due to the scale of the network, which can be of thousands of devices, but also due to the the fact that devices may have multiple interfaces, such as Wi-Fi and LTE for a smartphone, resulting in a dynamic change of the aforementioned identifiers.
 
-Many approaches to the device identification have been studied and developed, such are identification based on web\cite{webfingerprint1, webfingerprint2} or radiometric\cite{radiofingerprint} fingerprints. Both this methods however are not usable for large scales identifications at low cost. There also exists methods for  the identification of the OS of a device\cite{idos1, idos2}, which however does not bring any information about its type or model.
+Many approaches to the device identification have been studied and developed, such as identification based on web\cite{webfingerprint1, webfingerprint2} or radiometric\cite{radiofingerprint} fingerprints. This methods however are not usable for large scales identifications, at low cost, and also suffer from the main drawback of not being generically applicable for all sorts of devices. There also exists methods for  the identification of the OS of a device\cite{idos1, idos2}, which however does not bring any information about its type or model.
 
-In order to tackle this problem we propose a method based on the use of Artificial Neural Network for the identification. The whole approach will be described in detail in the following chapters. The main idea, of the proposed approach, is to utilize the traffic stream information to perform the identification. More precisely we are going to create an input dataset where each device is represented by a set of time series of its traffic inside the network. 
+In order to tackle this problem we propose a method based on the use of Artificial Neural Network for the identification. The whole approach will be described in detail in the following chapters. The main idea, of the proposed approach, is to utilize the traffic stream information to perform the identification. More precisely we are going to create an input dataset where each device is represented by a set of time series of its traffic inside the network and use it to determinate its type. 
 
 \section{The Datasets}\label{secdata}
 
-As stated before there exists a wide variety of devices therefore creating networks of different topology. For this reason we decided to utilize two completely different, publicly available, datasets: the 4SICS dataset and the IoT Sentinel dataset, respecttively described in \secref{4sics_sec} and \secref{iot_sec}. This choice was made in order to demonstrate that the proposed approach can be generalized to any type of device and network considered.
+As stated before there exists a wide variety of devices, therefore creating networks of different topology. For this reason we decided to utilize two completely different, publicly available, datasets: the 4SICS dataset and the IoT Sentinel dataset, respecttively described in \secref{4sics_sec} and \secref{iot_sec}. This choice was made in order to demonstrate that the proposed approach can be generalized to any type of device and network considered.
 
 \subsection{4SICS dataset}\label{4sics_sec}
 
-The {4SICS dataset}\cite{4sics_site} contains traffic stream collected at an industrial cyber security conference. This dataset represent an industrial network with many PLCs and other industrial equipment, such as firewalls and switches. The full list of devices contained in the dataset is reported in \tabref{tab:4sicsdevlist}
+The {4SICS dataset}\cite{4sics_site} contains traffic stream inforamtion collected at an industrial cyber security conference. This dataset represents an industrial network with many PLCs and other industrial equipment, such as firewalls and switches. The full list of devices contained in the dataset is reported in \tabref{tab:4sicsdevlist}
 
 \begin{table}[H]
     \centering
@@ -97,7 +97,7 @@ The {4SICS dataset}\cite{4sics_site} contains traffic stream collected at an ind
 
 \subsection{IoT device dataset} \label{iot_sec}
 
-The {IoT Sentinel Dataset}\cite{iot_site} was used in the "IoT Sentinel"\cite{iot_paper} publication, for experiments in IoT device identification. This dataset contains information of many smart home devices, effectively representing what may be a domestic network. The full list of devices contained in the dataset is reported in \tabref{tab:iotdevlist}
+The {IoT Sentinel Dataset}\cite{iot_site} is the dataset used in the "IoT Sentinel"\cite{iot_paper} publication, for experiments in the IoT device identification. This dataset contains information of many smart home devices, effectively representing what may be a domestic network. The full list of devices contained in the dataset is reported in \tabref{tab:iotdevlist}
 
 
 \begin{table}[H]
